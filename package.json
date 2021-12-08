@@ -1,0 +1,51 @@
+{
+  "dependencies": {
+    "apollo-server-core": "^3.5.0",
+    "apollo-server-express": "^3.5.0",
+    "connect-redis": "^6.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-session": "^1.17.2",
+    "ioredis": "^4.28.2",
+    "morgan": "^1.10.0"
+  },
+  "name": "graphql-rest-server",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "depcheck": "^1.4.2",
+    "dotenv": "^10.0.0",
+    "esm": "^3.2.25",
+    "nodemon": "^2.0.15",
+    "prisma": "^3.6.0"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon -r esm .",
+    "start": "cross-env NODE_ENV=production node -r esm .",
+    "up": "docker-compose up -d",
+    "down": "docker-compose down",
+    "down:hard": "docker-compose down -v",
+    "stop": "docker-compose stop",
+    "deep-check": "depcheck --ignores esm",
+    "prisma:format": "prisma format",
+    "preprisma:deploy": "npm run prisma:format",
+    "prisma:deploy": "prisma migrate dev --name dev",
+    "prisma:seed": "prisma db seed --preview-feature",
+    "prisma:pull": "prisma db pull",
+    "prisma:generate": "prisma db generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shahanahmed86/graphql-rest-server.git"
+  },
+  "keywords": [],
+  "author": "Shahan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shahanahmed86/graphql-rest-server/issues"
+  },
+  "homepage": "https://github.com/shahanahmed86/graphql-rest-server#readme"
+}
