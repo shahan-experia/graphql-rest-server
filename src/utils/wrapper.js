@@ -1,9 +1,16 @@
-export function convertToRest(req, res) {
-	const root = null;
-	let args = { ...req.query, ...req.params, file: req.files };
-	if (req.body) args = { ...args, ...req.body };
-	const ctx = { req, res };
-	return [root, args, ctx];
+import { ApolloError } from 'apollo-server-errors';
+
+export async function wrapperController([req, res], controller, canTriggerRest = false) {
+	try {
+		const root = null;
+		let args = { ...req.query, ...req.params, file: req.files };
+		if (req.body) args = { ...args, ...req.body };
+		
+		const result = await controller(root, args, { req, res });
+		res.status(200).send(result);
+	} catch (error) {
+		res.status(409).send(error.message || 'Something went wrong');
+	}
 }
 
 export const catchAsync =

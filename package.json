@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "@prisma/client": "^3.6.0",
     "apollo-server-core": "^3.5.0",
     "apollo-server-express": "^3.5.0",
+    "bcryptjs": "^2.4.3",
     "connect-redis": "^6.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -33,9 +35,12 @@
     "prisma:format": "prisma format",
     "preprisma:deploy": "npm run prisma:format",
     "prisma:deploy": "prisma migrate dev --name dev",
-    "prisma:seed": "prisma db seed --preview-feature",
+    "prisma:seed": "prisma db seed",
     "prisma:pull": "prisma db pull",
-    "prisma:generate": "prisma db generate"
+    "prisma:generate": "prisma generate"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "repository": {
     "type": "git",
