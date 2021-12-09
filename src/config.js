@@ -4,11 +4,10 @@ export const {
 	APP_HOST = 'localhost',
 	APP_HTTP = 'http:',
 
-	SESSION_NAME = 'sid',
-	SESSION_SECRET = 'ssh!secret!',
-
 	REDIS_HOST = 'localhost',
 	REDIS_PASSWORD = 'secret',
+
+	JWT_SECRET = 'jwt_secret',
 
 	SMTP_HOST = 'smtp.gmail.com',
 	SMTP_USER,
@@ -20,8 +19,6 @@ export const APP_PORT = +process.env.APP_PORT || 4000;
 export const IN_PROD = NODE_ENV === 'production';
 
 export const BCRYPT_SALT = +process.env.BCRYPT_SALT || 10;
-
-export const SESSION_LIFETIME = +process.env.SESSION_LIFETIME || 7200000;
 
 export const REDIS_PORT = +process.env.REDIS_PORT || 6379;
 
