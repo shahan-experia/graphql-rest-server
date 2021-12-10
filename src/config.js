@@ -1,8 +1,8 @@
 export const {
 	NODE_ENV = 'development',
 
-	APP_HOST = 'localhost',
 	APP_HTTP = 'http:',
+	APP_HOST = 'localhost:4000',
 
 	REDIS_HOST = 'localhost',
 	REDIS_PASSWORD = 'secret',

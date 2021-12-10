@@ -11,7 +11,7 @@ export async function validateToken(tokenKey) {
 
 	if (decoded.exp < now) throw new Error('Session Expired.');
 
-	return decoded.adminId;
+	return decoded;
 }
 
 export function getToken(tokenKey) {

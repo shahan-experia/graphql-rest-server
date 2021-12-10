@@ -14,7 +14,7 @@ async function loggedInAdmin(root, args, ctx) {
 
 	const token = jwt.sign({ adminId: admin.id }, JWT_SECRET, { expiresIn: '1h' });
 
-	await redis.set('token', token);
+	await redis.set('adminToken', token);
 
 	return admin;
 }

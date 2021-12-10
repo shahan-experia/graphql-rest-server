@@ -20,6 +20,10 @@ app.use(
 	}),
 );
 
+// set the view engine to ejs
+app.set('views', path.join(__dirname, 'src/views'));
+app.set('view engine', 'ejs');
+
 app.use(
 	fileUpload({
 		limits: { fileSize: 5 * 1024 * 1024 },

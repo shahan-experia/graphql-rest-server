@@ -1,14 +1,8 @@
-import { prisma } from '../library';
-import { validateToken, getToken } from '../utils';
+import { middleware } from '../controllers';
 
-export const ensureSignedIn = async (req, res, next) => {
+export const ensureSignedIn = (args) => async (req, res, next) => {
 	try {
-		const adminId = await validateToken('token');
-
-		const user = await prisma.admin.findUnique({ where: { id: adminId } });
-		if (!user) throw new Error('Not Authenticated');
-
-		req.user = { ...user, type: 'portal' };
+		req.user = await middleware.ensureSignIn(args);
 
 		next();
 	} catch (error) {
@@ -16,10 +10,9 @@ export const ensureSignedIn = async (req, res, next) => {
 	}
 };
 
-export const ensureSignedOut = async (req, res, next) => {
+export const ensureSignedOut = (args) => async (req, res, next) => {
 	try {
-		const token = await getToken('token');
-		if (token) throw new Error('You need to sign out');
+		await middleware.ensureSignOut(args);
 
 		next();
 	} catch (error) {

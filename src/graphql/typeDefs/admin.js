@@ -9,12 +9,12 @@ const rootSchema = gql`
   }
 
 	extend type Query {
-		me: Admin!
+		me: Admin! @auth(shouldAdmin: true)
 	}
 
 	extend type Mutation {
-		loginAdmin(username: String!, password: String!): Admin!
-    logoutAdmin: Status!
+		loginAdmin(username: String!, password: String!): Admin! @guest(shouldAdmin: true)
+    logoutAdmin: String! @auth(shouldAdmin: true)
 	}
 `;
 

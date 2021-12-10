@@ -1,30 +1,41 @@
 import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import http from 'http';
 import app from './express';
-import { typeDefs, resolvers } from './graphql';
-import { APP_PORT } from './config';
+import { typeDefs, resolvers, schemaDirectives } from './graphql';
+import { APP_PORT, IN_PROD } from './config';
 
-(async function () {
+const httpServer = (async function () {
 	try {
-		const httpServer = http.createServer(app);
-
 		const server = new ApolloServer({
+			introspection: true,
 			typeDefs,
 			resolvers,
+			schemaDirectives,
 			context: ({ req, res }) => ({ req, res }),
-			plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+			playground: IN_PROD
+				? false
+				: {
+						'request.credentials': 'include',
+						shareEnabled: true,
+				  },
 		});
 
 		await server.start();
 
 		server.applyMiddleware({ app, path: '/graphql', cors: false });
 
+		const httpServer = http.createServer(app);
+		server.installSubscriptionHandlers(httpServer);
+
 		httpServer.listen({ port: APP_PORT }, () => {
-			return console.log(`🚀 http://localhost:${APP_PORT}${server.graphqlPath}`);
+			console.log(`🚀 http://localhost:${APP_PORT}${server.graphqlPath}`);
 		});
+
+		return httpServer;
 	} catch (error) {
 		console.error(error);
 		process.exit(1);
 	}
 })();
+
+export default httpServer;

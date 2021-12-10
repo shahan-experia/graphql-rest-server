@@ -1,7 +1,7 @@
 import { signOut } from '../../utils';
 
-async function logoutAdmin(root, args, ctx) {
-	return signOut('token');
+function logoutAdmin() {
+	return signOut('adminToken');
 }
 
 export default logoutAdmin;
