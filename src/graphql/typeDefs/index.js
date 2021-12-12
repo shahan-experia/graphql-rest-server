@@ -1,6 +1,6 @@
-import rootSchema from './root';
-import adminSchema from './admin';
+const rootSchema = require('./root');
+const adminSchema = require('./admin');
 
 const typeDefs = [rootSchema, adminSchema];
 
-export default typeDefs;
+module.exports = typeDefs;

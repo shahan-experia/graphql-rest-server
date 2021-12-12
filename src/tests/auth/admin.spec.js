@@ -1,6 +1,6 @@
-import chai from 'chai';
-import { BASE_URL } from '../../config';
-import { auth } from '../helper';
+const chai = require('chai');
+const { BASE_URL } = require('../../config');
+const { auth } = require('../helper');
 
 const { expect } = chai;
 

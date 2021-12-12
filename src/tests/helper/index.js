@@ -1,1 +1,3 @@
-export * as auth from './auth.js';
+module.exports = {
+	auth: require('./auth'),
+};

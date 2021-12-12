@@ -1,8 +1,8 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { ApolloError } from 'apollo-server-errors';
-import { prisma, redis } from '../../library';
-import { JWT_SECRET } from '../../config';
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { ApolloError } = require('apollo-server-errors');
+const { prisma, redis } = require('../../library');
+const { JWT_SECRET } = require('../../config');
 
 async function loggedInAdmin(root, args, ctx) {
 	const admin = await prisma.admin.findFirst({ where: { username: args.username } });
@@ -19,4 +19,4 @@ async function loggedInAdmin(root, args, ctx) {
 	return admin;
 }
 
-export default loggedInAdmin;
+module.exports = loggedInAdmin;

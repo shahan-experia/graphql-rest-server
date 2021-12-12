@@ -25,4 +25,4 @@ const rootSchema = gql`
 	}
 `;
 
-export default rootSchema;
+module.exports = rootSchema;

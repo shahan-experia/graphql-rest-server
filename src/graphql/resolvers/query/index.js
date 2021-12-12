@@ -1,5 +1,5 @@
-import admin from './admin';
+const admin = require('./admin');
 
 const Query = { ...admin };
 
-export default Query;
+module.exports = Query;

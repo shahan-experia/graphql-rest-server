@@ -1,7 +1,7 @@
-import { prisma } from '../library';
-import { validateToken, getToken } from '../utils';
+const { prisma } = require('../library');
+const { validateToken, getToken } = require('../utils');
 
-export async function ensureSignIn({ shouldAdmin, shouldUser }) {
+module.exports.ensureSignIn = async function ({ shouldAdmin, shouldUser }) {
 	let tokenKey;
 	if (shouldAdmin) tokenKey = 'adminToken';
 	else if (shouldUser) tokenKey = 'userToken';
@@ -24,13 +24,13 @@ export async function ensureSignIn({ shouldAdmin, shouldUser }) {
 	}
 
 	return data;
-}
+};
 
-export async function ensureSignOut({ shouldAdmin, shouldUser }) {
+module.exports.ensureSignOut = async function ({ shouldAdmin, shouldUser }) {
 	let tokenKey;
 	if (shouldAdmin) tokenKey = 'adminToken';
 	else if (shouldUser) tokenKey = 'userToken';
 
 	const tokenFound = await getToken(tokenKey);
 	if (tokenFound) throw new Error('You need to sign out.');
-}
+};

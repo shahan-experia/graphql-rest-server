@@ -1,4 +1,4 @@
-export async function wrapperController([req, res], controller, canTriggerRest = false) {
+module.exports.wrapperController = async function ([req, res], controller, canTriggerRest = false) {
 	try {
 		const root = null;
 		let args = { ...req.query, ...req.params, file: req.files };
@@ -9,9 +9,9 @@ export async function wrapperController([req, res], controller, canTriggerRest =
 	} catch (error) {
 		res.status(409).send(error.message || 'Something went wrong');
 	}
-}
+};
 
-export const catchAsync =
+module.exports.catchAsync =
 	(handler) =>
 	(...args) => {
 		const [, res] = args;

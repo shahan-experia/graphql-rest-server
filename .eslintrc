@@ -2,7 +2,6 @@
 	"env": {
 		"commonjs": true,
 		"browser": true,
-		"es2021": true,
 		"node": true,
 		"mocha": true
 	},
@@ -10,7 +9,6 @@
 	"ignorePatterns": ["package*.json", "_builds"],
 	"rules": {
 		"dot-notation": "off",
-		"new-cap": "off",
 		"no-useless-return": "off",
 		"array-callback-return": "off"
 	},

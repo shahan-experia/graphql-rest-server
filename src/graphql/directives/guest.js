@@ -1,6 +1,6 @@
-import { AuthenticationError, SchemaDirectiveVisitor } from 'apollo-server-express';
-import { defaultFieldResolver } from 'graphql';
-import { middleware } from '../../controllers';
+const { AuthenticationError, SchemaDirectiveVisitor } = require('apollo-server-express');
+const { defaultFieldResolver } = require('graphql');
+const { middleware } = require('../../controllers');
 
 class GuestDirective extends SchemaDirectiveVisitor {
 	visitFieldDefinition(field, details) {
@@ -18,4 +18,4 @@ class GuestDirective extends SchemaDirectiveVisitor {
 	}
 }
 
-export default GuestDirective;
+module.exports = GuestDirective;

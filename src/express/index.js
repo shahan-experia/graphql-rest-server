@@ -1,9 +1,9 @@
-import express from 'express';
-import morgan from 'morgan';
-import cors from 'cors';
-import fs from 'fs';
-import path from 'path';
-import fileUpload from 'express-fileupload';
+const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+const fileUpload = require('express-fileupload');
 
 // initiate express app;
 const app = express();
@@ -38,8 +38,8 @@ app.disable('x-powered-by');
 
 fs.readdirSync('./src/express/routes/').forEach((file) => {
 	if (fs.statSync(path.join(__dirname, 'routes', file)).isDirectory()) {
-		import(`./routes/${file}/routes.js`).then((route) => app.use(`/api/${file}`, route.default));
+		app.use(`/api/${file}`, require(`./routes/${file}/routes.js`));
 	}
 });
 
-export default app;
+module.exports = app;

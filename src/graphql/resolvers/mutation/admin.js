@@ -1,8 +1,8 @@
-import { adminController } from '../../../controllers';
+const { adminController } = require('../../../controllers');
 
 const admin = {
 	loginAdmin: (...args) => adminController.loginAdmin(...args),
 	logoutAdmin: (...args) => adminController.logoutAdmin(...args),
 };
 
-export default admin;
+module.exports = admin;

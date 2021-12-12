@@ -3,4 +3,4 @@ async function me(root, args, ctx) {
 	return user;
 }
 
-export default me;
+module.exports = me;

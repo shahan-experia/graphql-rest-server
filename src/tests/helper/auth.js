@@ -1,10 +1,10 @@
-import chai from 'chai';
-import chaiHttp from 'chai-http';
-import server from '../../';
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const server = require('../../');
 
 chai.use(chaiHttp);
 
-export async function adminLogin(username = 'shahan', password = 'shahan') {
+module.exports.adminLogin = async function (username = 'shahan', password = 'shahan') {
 	return server.then(async (app) => {
 		const result = await chai
 			.request(app)
@@ -15,4 +15,4 @@ export async function adminLogin(username = 'shahan', password = 'shahan') {
 
 		return result;
 	});
-}
+};

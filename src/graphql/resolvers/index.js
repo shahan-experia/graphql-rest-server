@@ -1,7 +1,7 @@
-import Mutation from './mutation';
-import Query from './query';
+const Mutation = require('./mutation');
+const Query = require('./query');
 
-// import * as relations from './relations';
+// const relations = require('./relations');
 
 const resolvers = {
 	Query,
@@ -9,4 +9,4 @@ const resolvers = {
 	// ...relations
 };
 
-export default resolvers;
+module.exports = resolvers;

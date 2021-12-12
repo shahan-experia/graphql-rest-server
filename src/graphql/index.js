@@ -1,5 +1,5 @@
-export { default as typeDefs } from './typeDefs';
-
-export { default as resolvers } from './resolvers';
-
-export { default as schemaDirectives } from './directives';
+module.exports = {
+	typeDefs: require('./typeDefs'),
+	resolvers: require('./resolvers'),
+	schemaDirectives: require('./directives'),
+};

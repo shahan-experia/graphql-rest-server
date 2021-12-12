@@ -1,10 +1,10 @@
-import { redis } from '../library';
+const { redis } = require('../library');
 
-export function signOut(tokenKey) {
+module.exports.signOut = function (tokenKey) {
 	return new Promise((resolve, reject) => {
 		redis
 			.del(tokenKey)
 			.then(() => resolve("You've successfully signed out."))
 			.catch(reject);
 	});
-}
+};
