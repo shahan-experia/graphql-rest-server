@@ -7,7 +7,7 @@
 		"mocha": true
 	},
 	"extends": ["standard", "prettier"],
-	"ignorePatterns": ["package*.json", "_builds"],
+	"ignorePatterns": ["package*.json", "builds"],
 	"rules": {
 		"dot-notation": "off",
 		"no-useless-return": "off",
