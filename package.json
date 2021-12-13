@@ -5,8 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"postinstall": "echo 'installing husky....' && husky install",
-		"dev": "cross-env NODE_ENV=development nodemon .",
-		"start": "cross-env NODE_ENV=production node .",
+		"dev": "cross-env NODE_ENV=development nodemon -r esm .",
+		"start": "cross-env NODE_ENV=production node -r esm .",
 		"up": "docker-compose up -d",
 		"down": "docker-compose down",
 		"down:hard": "docker-compose down -v",
@@ -20,7 +20,7 @@
 		"prisma:generate": "prisma generate",
 		"lint": "eslint '**/*.js'",
 		"prettify": "prettier --no-editorconfig -l --write '**/*.{js,json}'",
-		"test": "mocha src/tests/**/*.spec.js --exit"
+		"test": "mocha -r esm src/tests/**/*.spec.js --exit"
 	},
 	"lint-staged": {
 		"**/*.{js,json}": [
@@ -70,6 +70,7 @@
 		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-promise": "^5.2.0",
+		"esm": "^3.2.25",
 		"husky": "^7.0.4",
 		"lint-staged": "^12.1.2",
 		"mocha": "^8.4.0",

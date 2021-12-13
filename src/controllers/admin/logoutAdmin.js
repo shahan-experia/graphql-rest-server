@@ -1,7 +1,7 @@
-const { signOut } = require('../../utils');
+import { signOut } from '../../utils';
 
 function logoutAdmin() {
 	return signOut('adminToken');
 }
 
-module.exports = logoutAdmin;
+export default logoutAdmin;

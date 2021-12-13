@@ -1,8 +1,10 @@
-const { ApolloServer } = require('apollo-server-express');
-const http = require('http');
-const app = require('./express');
-const { typeDefs, resolvers, schemaDirectives } = require('./graphql');
-const { APP_PORT, IN_PROD } = require('./config');
+import 'dotenv/config';
+
+import { ApolloServer } from 'apollo-server-express';
+import http from 'http';
+import app from './express';
+import { typeDefs, resolvers, schemaDirectives } from './graphql';
+import { APP_PORT, IN_PROD } from './config';
 
 const server = new ApolloServer({
 	introspection: true,
@@ -27,4 +29,4 @@ httpServer.listen({ port: APP_PORT }, () => {
 	console.log(`🚀 http://localhost:${APP_PORT}${server.graphqlPath}`);
 });
 
-module.exports = httpServer;
+export default httpServer;

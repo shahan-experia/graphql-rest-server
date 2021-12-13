@@ -1,9 +1,9 @@
-const AuthDirective = require('./auth');
-const GuestDirective = require('./guest');
+import AuthDirective from './auth';
+import GuestDirective from './guest';
 
 const schemaDirectives = {
 	auth: AuthDirective,
 	guest: GuestDirective,
 };
 
-module.exports = schemaDirectives;
+export default schemaDirectives;

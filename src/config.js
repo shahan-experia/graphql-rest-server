@@ -1,22 +1,29 @@
-module.exports.APP_PORT = +process.env.APP_PORT || 4000;
+export const {
+	NODE_ENV = 'development',
 
-module.exports.NODE_ENV = process.env.NODE_ENV;
-module.exports.IN_PROD = process.env.NODE_ENV === 'production';
+	APP_PROTOCOL = 'http:',
+	APP_HOST = 'localhost:4000',
 
-module.exports.APP_HTTP = process.env.APP_HTTP;
-module.exports.APP_HOST = process.env.APP_HOST;
-module.exports.BASE_URL = `${process.env.APP_HTTP}//${process.env.APP_HOST}`;
+	REDIS_HOST = 'localhost',
+	REDIS_PASSWORD = 'secret',
 
-module.exports.REDIS_HOST = process.env.REDIS_HOST;
-module.exports.REDIS_PASSWORD = process.env.REDIS_PASSWORD;
-module.exports.REDIS_PORT = +process.env.REDIS_PORT || 6379;
+	JWT_SECRET = 'jwt_secret',
 
-module.exports.JWT_SECRET = process.env.JWT_SECRET;
+	SMTP_HOST = 'smtp.gmail.com',
+	SMTP_USER,
+	SMTP_PASS,
+} = process.env;
 
-module.exports.BCRYPT_SALT = +process.env.BCRYPT_SALT || 10;
+export const APP_PORT = +process.env.APP_PORT || 4000;
 
-module.exports.SMTP_HOST = process.env.SMTP_HOST;
-module.exports.SMTP_USER = process.env.SMTP_USER;
-module.exports.SMTP_PASS = process.env.SMTP_PASS;
-module.exports.SMTP_PORT = +process.env.SMTP_PORT || 587;
-module.exports.IS_NODEMAILER_SECURE = process.env.SMTP_PORT === 465;
+export const IN_PROD = NODE_ENV === 'production';
+
+export const BCRYPT_SALT = +process.env.BCRYPT_SALT || 10;
+
+export const REDIS_PORT = +process.env.REDIS_PORT || 6379;
+
+export const SMTP_PORT = +process.env.SMTP_PORT || 587;
+
+export const IS_NODEMAILER_SECURE = SMTP_PORT === 465;
+
+export const BASE_URL = `${APP_PROTOCOL}//${APP_HOST}`;

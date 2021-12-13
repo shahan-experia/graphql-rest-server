@@ -1,9 +1,9 @@
-const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('../config');
-const { redis } = require('../library');
+import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../config';
+import { redis } from '../library';
 
-module.exports.validateToken = async function (tokenKey) {
-	const token = await redis.get(tokenKey);
+export async function validateToken(tokenKey) {
+	const token = await getToken(tokenKey);
 	if (!token) throw new Error('You need to sign in.');
 
 	const decoded = jwt.verify(token, JWT_SECRET);
@@ -12,8 +12,8 @@ module.exports.validateToken = async function (tokenKey) {
 	if (decoded.exp < now) throw new Error('Session Expired.');
 
 	return decoded;
-};
+}
 
-module.exports.getToken = function (tokenKey) {
+export function getToken(tokenKey) {
 	return redis.get(tokenKey);
-};
+}

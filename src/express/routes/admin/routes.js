@@ -1,13 +1,13 @@
-const path = require('path');
-const fs = require('fs');
-const express = require('express');
+import path from 'path';
+import fs from 'fs';
+import express from 'express';
 
 const router = express.Router();
 
 fs.readdirSync(__dirname).forEach((file) => {
 	if (fs.statSync(path.join(__dirname, file)).isDirectory()) {
-		router.use(`/${file}`, require(`./${file}`));
+		import(`./${file}`).then((route) => router.use(`/${file}`, route.default));
 	}
 });
 
-module.exports = router;
+export default router;

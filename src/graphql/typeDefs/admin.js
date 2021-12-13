@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+import { gql } from 'apollo-server-express';
 
 const rootSchema = gql`
   type Admin {
@@ -18,4 +18,4 @@ const rootSchema = gql`
 	}
 `;
 
-module.exports = rootSchema;
+export default rootSchema;

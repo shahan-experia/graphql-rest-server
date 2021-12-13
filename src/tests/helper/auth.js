@@ -1,18 +1,20 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const server = require('../../');
+import 'dotenv/config';
+
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import app from '../../';
 
 chai.use(chaiHttp);
 
-module.exports.adminLogin = async function (username = 'shahan', password = 'shahan') {
-	return server.then(async (app) => {
-		const result = await chai
-			.request(app)
-			.post(`/api/admin/auth/login`)
-			.set('content-type', 'application/json')
-			.field('username', username)
-			.field('password', password);
+export function adminLogin(username = 'shahan', password = 'shahan') {
+	return chai
+		.request(app)
+		.post(`/api/admin/auth/login`)
+		.set('content-type', 'application/json')
+		.field('username', username)
+		.field('password', password);
+}
 
-		return result;
-	});
-};
+export function adminLogout() {
+	return chai.request(app).post(`/api/admin/auth/logout`).set('content-type', 'application/json');
+}

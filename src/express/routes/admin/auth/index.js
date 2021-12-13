@@ -1,7 +1,7 @@
-const express = require('express');
-const { catchAsync, wrapperController } = require('../../../../utils');
-const { adminController } = require('../../../../controllers');
-const { ensureSignedIn, ensureSignedOut } = require('../../../middleware');
+import express from 'express';
+import { catchAsync, wrapperController } from '../../../../utils';
+import { adminController } from '../../../../controllers';
+import { ensureSignedIn, ensureSignedOut } from '../../../middleware';
 
 const router = express.Router();
 
@@ -17,4 +17,4 @@ router.delete('/logout', ensureSignedIn({ shouldAdmin: true, shouldUser: false }
 	catchAsync(wrapperController(args, adminController.logoutAdmin)),
 );
 
-module.exports = router;
+export default router;

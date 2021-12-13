@@ -1,5 +1,5 @@
-module.exports = {
-	...require('./wrapper'),
-	...require('./auth'),
-	...require('./logics'),
-};
+export * from './wrapper';
+
+export * from './auth';
+
+export * from './logics';

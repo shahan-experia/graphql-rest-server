@@ -1,7 +1,7 @@
-const { adminController } = require('../../../controllers');
+import { adminController } from '../../../controllers';
 
 const admin = {
 	me: (...args) => adminController.me(...args),
 };
 
-module.exports = admin;
+export default admin;

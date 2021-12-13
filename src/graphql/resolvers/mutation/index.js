@@ -1,5 +1,5 @@
-const admin = require('./admin');
+import admin from './admin';
 
 const Mutation = { ...admin };
 
-module.exports = Mutation;
+export default Mutation;

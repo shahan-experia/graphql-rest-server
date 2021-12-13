@@ -1,6 +1,9 @@
-const chai = require('chai');
-const { BASE_URL } = require('../../config');
-const { auth } = require('../helper');
+import 'dotenv/config';
+
+import chai from 'chai';
+import { BASE_URL } from '../../config';
+import { auth } from '../helper';
+import { signOut } from '../../utils';
 
 const { expect } = chai;
 
@@ -9,11 +12,11 @@ describe('Admin Authentication routes APIs', function () {
 	this.slow(2000);
 
 	it(`${BASE_URL}/api/admin/auth/login => POST => should fail`, async () => {
-		try {
-			await auth.adminLogin('shahan', 'wrong-password');
-			expect(true).to.be.be.false;
-		} catch (error) {
-			expect(true).to.be.be.false;
-		}
+		await signOut('adminToken');
+
+		const { error } = await auth.adminLogin('shahan', 'wrong-password');
+
+		expect(error).to.be.be.an.instanceOf(Error);
+		expect(error.text).to.be.a.string('Not Authenticated');
 	});
 });

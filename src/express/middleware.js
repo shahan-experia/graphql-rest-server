@@ -1,6 +1,6 @@
-const { middleware } = require('../controllers');
+import { middleware } from '../controllers';
 
-module.exports.ensureSignedIn = (args) => async (req, res, next) => {
+export const ensureSignedIn = (args) => async (req, res, next) => {
 	try {
 		req.user = await middleware.ensureSignIn(args);
 
@@ -10,7 +10,7 @@ module.exports.ensureSignedIn = (args) => async (req, res, next) => {
 	}
 };
 
-module.exports.ensureSignedOut = (args) => async (req, res, next) => {
+export const ensureSignedOut = (args) => async (req, res, next) => {
 	try {
 		await middleware.ensureSignOut(args);
 

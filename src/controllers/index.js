@@ -1,4 +1,3 @@
-module.exports = {
-	adminController: require('./admin'),
-	middleware: require('./middleware'),
-};
+export * as adminController from './admin';
+
+export * as middleware from './middleware';

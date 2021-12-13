@@ -1,4 +1,4 @@
-module.exports.wrapperController = async function ([req, res], controller, canTriggerRest = false) {
+export const wrapperController = async function ([req, res], controller) {
 	try {
 		const root = null;
 		let args = { ...req.query, ...req.params, file: req.files };
@@ -11,7 +11,7 @@ module.exports.wrapperController = async function ([req, res], controller, canTr
 	}
 };
 
-module.exports.catchAsync =
+export const catchAsync =
 	(handler) =>
 	(...args) => {
 		const [, res] = args;
