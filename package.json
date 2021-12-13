@@ -25,7 +25,8 @@
 	"lint-staged": {
 		"**/*.{js,json}": [
 			"npm run lint",
-			"npm run prettify"
+			"npm run prettify",
+			"npm run test"
 		]
 	},
 	"prisma": {
