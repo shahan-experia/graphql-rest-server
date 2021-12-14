@@ -4,7 +4,7 @@ import { ApolloServer } from 'apollo-server-express';
 import http from 'http';
 import app from './express';
 import { typeDefs, resolvers, schemaDirectives } from './graphql';
-import { APP_PORT, IN_PROD } from './config';
+import { APP_HOST, APP_PORT, APP_PROTOCOL, IN_PROD } from './config';
 
 const server = new ApolloServer({
 	introspection: true,
@@ -26,7 +26,7 @@ const httpServer = http.createServer(app);
 server.installSubscriptionHandlers(httpServer);
 
 httpServer.listen({ port: APP_PORT }, () => {
-	console.log(`🚀 http://localhost:${APP_PORT}${server.graphqlPath}`);
+	console.log(`🚀 ${APP_PROTOCOL}://${APP_HOST}${server.graphqlPath}`);
 });
 
 export default httpServer;

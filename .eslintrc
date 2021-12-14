@@ -7,11 +7,12 @@
 		"mocha": true
 	},
 	"extends": ["standard", "prettier"],
-	"ignorePatterns": ["package*.json", "builds"],
+	"ignorePatterns": ["package*.json", "_builds"],
 	"rules": {
 		"dot-notation": "off",
 		"no-useless-return": "off",
-		"array-callback-return": "off"
+		"array-callback-return": "off",
+		"no-use-before-define": "off"
 	},
 	"overrides": [
 		{

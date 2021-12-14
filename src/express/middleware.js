@@ -1,4 +1,5 @@
 import { middleware } from '../controllers';
+import { catchError } from '../utils';
 
 export const ensureSignedIn = (args) => async (req, res, next) => {
 	try {
@@ -6,7 +7,8 @@ export const ensureSignedIn = (args) => async (req, res, next) => {
 
 		next();
 	} catch (error) {
-		res.status(401).send(error.message || 'Not Authenticated');
+		const { statusCode, errorMessage } = catchError(error);
+		res.status(statusCode).send(errorMessage);
 	}
 };
 
@@ -16,6 +18,7 @@ export const ensureSignedOut = (args) => async (req, res, next) => {
 
 		next();
 	} catch (error) {
-		res.status(401).send(error.message || 'Not Authenticated');
+		const { statusCode, errorMessage } = catchError(error);
+		res.status(statusCode).send(errorMessage);
 	}
 };

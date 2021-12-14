@@ -104,4 +104,8 @@ dist
 .tern-port
 
 # builds
-builds
+_builds
+
+# uploads
+src/temp
+src/uploads

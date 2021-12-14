@@ -8,3 +8,13 @@ export function signOut(tokenKey) {
 			.catch(reject);
 	});
 }
+
+export function catchError(error) {
+	let statusCode = 409;
+	let errorMessage = 'Something went wrong';
+
+	if (error.message.indexOf(';;') === -1) errorMessage = error.message;
+	else [statusCode, errorMessage] = error.message.split(';;');
+
+	return { statusCode, errorMessage };
+}

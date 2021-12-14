@@ -15,6 +15,10 @@ export function adminLogin(username = 'shahan', password = 'shahan') {
 		.field('password', password);
 }
 
+export function me() {
+	return chai.request(app).get(`/api/admin/auth/me`).set('content-type', 'application/json');
+}
+
 export function adminLogout() {
-	return chai.request(app).post(`/api/admin/auth/logout`).set('content-type', 'application/json');
+	return chai.request(app).delete(`/api/admin/auth/logout`).set('content-type', 'application/json');
 }

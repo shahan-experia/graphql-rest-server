@@ -1,3 +1,5 @@
+import { catchError } from '.';
+
 export const wrapperController = async function ([req, res], controller) {
 	try {
 		const root = null;
@@ -7,7 +9,8 @@ export const wrapperController = async function ([req, res], controller) {
 		const result = await controller(root, args, { req, res });
 		res.status(200).send(result);
 	} catch (error) {
-		res.status(409).send(error.message || 'Something went wrong');
+		const { statusCode, errorMessage } = catchError(error);
+		res.status(statusCode).send(errorMessage);
 	}
 };
 
@@ -16,7 +19,7 @@ export const catchAsync =
 	(...args) => {
 		const [, res] = args;
 		return handler(...args).catch((error) => {
-			console.error('catch in catchAsync', error);
-			return res.status(500).send(error.message || 'An error occurred');
+			const { statusCode, errorMessage } = catchError(error);
+			res.status(statusCode).send(errorMessage);
 		});
 	};

@@ -1,5 +1,6 @@
 function me(root, args, ctx) {
-	const { type, ...user } = ctx.req.user;
+	const { type, password, ...user } = ctx.req.user;
+
 	return user;
 }
 
