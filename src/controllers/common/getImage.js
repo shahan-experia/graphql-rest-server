@@ -1,7 +1,8 @@
 import { file } from '../../utils';
 
-async function getImage(req, res) {
-	const path = await file.res.status(200).json({ path });
+function getImage(req, res) {
+	const fileBuffer = file.getFileBuffer(req.query.filename);
+	res.send(fileBuffer);
 }
 
 export default getImage;

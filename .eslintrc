@@ -8,12 +8,7 @@
 	},
 	"extends": ["standard", "prettier"],
 	"ignorePatterns": ["package*.json", "_builds"],
-	"rules": {
-		"dot-notation": "off",
-		"no-useless-return": "off",
-		"array-callback-return": "off",
-		"no-use-before-define": "off"
-	},
+	"rules": {},
 	"overrides": [
 		{
 			"files": ["*.spec.js"],

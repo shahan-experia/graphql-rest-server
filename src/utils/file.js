@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, unlinkSync, rename } from 'fs';
+import { existsSync, mkdirSync, unlinkSync, readFileSync, rename } from 'fs';
 import path from 'path';
 import { v4 as uuid } from 'uuid';
 
@@ -21,18 +21,26 @@ class File {
 			const uploadFile = path.join(this.tempPath, filename);
 			imageFile
 				.mv(uploadFile) // Use the mv() method to place the file somewhere
-				.then(() => resolve(filename))
+				.then(() => resolve('temp/' + filename))
 				.catch(reject);
 		});
 	}
 
 	deleteOldFileLocally(imagePath) {
-		if (existsSync(imagePath)) {
-			unlinkSync(imagePath);
+		const path = `./src/${imagePath}`;
+		if (existsSync(path)) {
+			unlinkSync(path);
 			return true;
 		}
 
 		return false;
+	}
+
+	getFileBuffer(imagePath) {
+		const path = `./src/${imagePath}`;
+		if (existsSync(path)) return readFileSync(path);
+
+		return readFileSync(`./src/assets/404-image.png`);
 	}
 
 	moveImageFromTmp(imagePath) {

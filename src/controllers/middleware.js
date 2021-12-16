@@ -32,5 +32,5 @@ export async function ensureSignOut({ shouldAdmin, shouldUser }) {
 	else if (shouldUser) tokenKey = 'userToken';
 
 	const tokenFound = await getToken(tokenKey);
-	if (tokenFound) throw new Error('403;;You need to sign out.');
+	if (tokenFound) throw new Error('401;;You need to sign out.');
 }

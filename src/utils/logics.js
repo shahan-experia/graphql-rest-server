@@ -4,7 +4,7 @@ import { redis } from '../library';
 
 export async function validateToken(tokenKey) {
 	const token = await getToken(tokenKey);
-	if (!token) throw new Error('403;;You need to sign in.');
+	if (!token) throw new Error('401;;You need to sign in.');
 
 	const decoded = jwt.verify(token, JWT_SECRET);
 	const now = Date.now() / 1000;

@@ -1,6 +1,7 @@
+import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import { catchError } from '.';
 
-export const wrapperController = async function ([req, res], controller) {
+export const restWrapper = async function ([req, res], controller) {
 	try {
 		const root = null;
 		let args = { ...req.query, ...req.params, file: req.files };
@@ -14,12 +15,32 @@ export const wrapperController = async function ([req, res], controller) {
 	}
 };
 
+export const graphqlWrapper = async function (args, controller) {
+	try {
+		const result = await controller(...args);
+		return result;
+	} catch (error) {
+		const { statusCode, errorMessage } = catchError(error);
+		switch (statusCode) {
+			case '401': {
+				throw new AuthenticationError(errorMessage);
+			}
+			default: {
+				throw new ApolloError(errorMessage);
+			}
+		}
+	}
+};
+
 export const catchAsync =
 	(handler) =>
-	(...args) => {
+	async (...args) => {
 		const [, res] = args;
-		return handler(...args).catch((error) => {
+		try {
+			const result = await handler(...args);
+			return result;
+		} catch (error) {
 			const { statusCode, errorMessage } = catchError(error);
 			res.status(statusCode).send(errorMessage);
-		});
+		}
 	};
