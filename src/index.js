@@ -1,32 +1,35 @@
 import 'dotenv/config';
 
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import { ApolloServer } from 'apollo-server-express';
 import http from 'http';
 import app from './express';
-import { typeDefs, resolvers, schemaDirectives } from './graphql';
-import { APP_HOST, APP_PORT, APP_PROTOCOL, IN_PROD } from './config';
+import { typeDefs, resolvers, directives } from './graphql';
+import { APP_HOST, APP_PORT, APP_PROTOCOL } from './config';
+
+const httpServer = http.createServer(app);
+
+let schema = makeExecutableSchema({ typeDefs, resolvers });
+
+Object.entries(directives).map(([key, directive]) => {
+	schema = directive(schema, key);
+	return schema;
+});
 
 const server = new ApolloServer({
 	introspection: true,
-	typeDefs,
-	resolvers,
-	schemaDirectives,
+	schema,
+	plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 	context: ({ req, res }) => ({ req, res }),
-	playground: IN_PROD
-		? false
-		: {
-				'request.credentials': 'include',
-				shareEnabled: true,
-		  },
 });
 
-server.applyMiddleware({ app, path: '/graphql', cors: false });
+server.start().then(() => {
+	server.applyMiddleware({ app, path: '/graphql', cors: false });
 
-const httpServer = http.createServer(app);
-server.installSubscriptionHandlers(httpServer);
-
-httpServer.listen({ port: APP_PORT }, () => {
-	console.log(`🚀 ${APP_PROTOCOL}://${APP_HOST}${server.graphqlPath}`);
+	httpServer.listen({ port: APP_PORT }, () => {
+		console.log(`🚀 ${APP_PROTOCOL}://${APP_HOST}${server.graphqlPath}`);
+	});
 });
 
 export default httpServer;

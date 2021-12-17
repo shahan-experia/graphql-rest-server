@@ -1,30 +1,38 @@
-import { ApolloError, AuthenticationError, SchemaDirectiveVisitor } from 'apollo-server-express';
+import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
+import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import { defaultFieldResolver } from 'graphql';
 import { middleware } from '../../controllers';
 import { catchError } from '../../utils';
 
-class GuestDirective extends SchemaDirectiveVisitor {
-	visitFieldDefinition(field, details) {
-		const { resolve = defaultFieldResolver } = field;
+function GuestDirective(schema, directiveName) {
+	return mapSchema(schema, {
+		[MapperKind.OBJECT_FIELD]: (field) => {
+			const guestDirective = getDirective(schema, field, directiveName);
 
-		field.resolve = async (...args) => {
-			try {
-				await middleware.ensureSignOut(this.args);
-			} catch (error) {
-				const { statusCode, errorMessage } = catchError(error);
-				switch (statusCode) {
-					case '401': {
-						throw new AuthenticationError(errorMessage);
+			if (guestDirective && guestDirective[0]) {
+				const { resolve = defaultFieldResolver } = field;
+
+				field.resolve = async (...args) => {
+					try {
+						await middleware.ensureSignOut(guestDirective[0]);
+					} catch (error) {
+						const { statusCode, errorMessage } = catchError(error);
+						switch (statusCode) {
+							case '401': {
+								throw new AuthenticationError(errorMessage);
+							}
+							default: {
+								throw new ApolloError(errorMessage);
+							}
+						}
 					}
-					default: {
-						throw new ApolloError(errorMessage);
-					}
-				}
+
+					return resolve.apply(this, args);
+				};
+				return field;
 			}
-
-			return resolve.apply(this, args);
-		};
-	}
+		},
+	});
 }
 
 export default GuestDirective;

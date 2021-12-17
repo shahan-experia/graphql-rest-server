@@ -1,6 +1,6 @@
 {
 	"name": "graphql-rest-server",
-	"description": "",
+	"description": "Boiler plate for nodejs application with graphql & express",
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
@@ -36,7 +36,7 @@
 		"type": "git",
 		"url": "git+https://github.com/shahanahmed86/graphql-rest-server.git"
 	},
-	"keywords": [],
+	"keywords": ["boiler-plate", "nodejs", "apollo server express", "apollo server"],
 	"author": "Shahan",
 	"license": "MIT",
 	"bugs": {
@@ -44,8 +44,11 @@
 	},
 	"homepage": "https://github.com/shahanahmed86/graphql-rest-server#readme",
 	"dependencies": {
+		"@graphql-tools/schema": "^8.3.1",
+		"@graphql-tools/utils": "^8.5.5",
 		"@prisma/client": "^3.6.0",
-		"apollo-server-express": "^2.25.3",
+		"apollo-server-core": "^3.5.0",
+		"apollo-server-express": "^3.5.0",
 		"bcryptjs": "^2.4.3",
 		"connect-redis": "^6.0.0",
 		"cors": "^2.8.5",
