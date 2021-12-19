@@ -3,7 +3,10 @@ import { catchError } from '../utils';
 
 export const ensureSignedIn = (args) => async (req, res, next) => {
 	try {
-		req.user = await middleware.ensureSignIn(args);
+		req.user = await middleware.ensureSignIn(
+			args,
+			req.get('Authorization') || req.headers.Authorization,
+		);
 
 		next();
 	} catch (error) {
@@ -14,7 +17,7 @@ export const ensureSignedIn = (args) => async (req, res, next) => {
 
 export const ensureSignedOut = (args) => async (req, res, next) => {
 	try {
-		await middleware.ensureSignOut(args);
+		await middleware.ensureSignOut(args, req.get('Authorization') || req.headers.Authorization);
 
 		next();
 	} catch (error) {

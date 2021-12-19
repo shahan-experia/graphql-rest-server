@@ -1,1 +1,3 @@
-export * as auth from './auth';
+export * as adminAuth from './admin';
+
+export * as userAuth from './user';

@@ -10,11 +10,11 @@ router.get('/me', ensureSignedIn({ shouldAdmin: true, shouldUser: false }), (...
 );
 
 router.post('/login', ensureSignedOut({ shouldAdmin: true, shouldUser: false }), (...args) =>
-	catchAsync(restWrapper(args, adminController.loginAdmin)),
+	catchAsync(restWrapper(args, adminController.login)),
 );
 
 router.delete('/logout', ensureSignedIn({ shouldAdmin: true, shouldUser: false }), (...args) =>
-	catchAsync(restWrapper(args, adminController.logoutAdmin)),
+	catchAsync(restWrapper(args, adminController.logout)),
 );
 
 export default router;

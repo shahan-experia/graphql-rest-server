@@ -2,24 +2,24 @@ import 'dotenv/config';
 
 import chai from 'chai';
 import { BASE_URL } from '../../config';
-import { adminAuth } from '../helper';
+import { userAuth } from '../helper';
 import { auth as authUtils } from '../../utils';
 
 const { expect } = chai;
 
-describe('Admin Authentication routes APIs', function () {
+describe('User Authentication routes APIs', function () {
 	this.timeout(0);
 	this.slow(1000);
 
 	before(async () => {
-		await authUtils.signOut('adminToken');
+		await authUtils.signOut('userToken');
 	});
 
-	it(`${BASE_URL}/api/admin/auth/logout => DEL => should success`, async () => {
+	it(`${BASE_URL}/api/user/auth/logout => DEL => should success`, async () => {
 		try {
-			const { body } = await adminAuth.login();
+			await userAuth.login();
 
-			const { error, text } = await adminAuth.logout(body.token);
+			const { error, text } = await userAuth.logout();
 
 			expect(error).to.be.be.false;
 			expect(text).to.be.a.string("You've successfully signed out.");
@@ -29,9 +29,9 @@ describe('Admin Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/admin/auth/logout => DEL => should fail`, async () => {
+	it(`${BASE_URL}/api/user/auth/logout => DEL => should fail`, async () => {
 		try {
-			const { error, text } = await adminAuth.logout();
+			const { error, text } = await userAuth.logout();
 
 			expect(error).to.be.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('You need to sign in.');
@@ -41,9 +41,9 @@ describe('Admin Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/admin/auth/login => POST => should fail`, async () => {
+	it(`${BASE_URL}/api/user/auth/login => POST => should fail`, async () => {
 		try {
-			const { error, text } = await adminAuth.login('shahan', 'wrong-password');
+			const { error, text } = await userAuth.login('shahan', 'wrong-password');
 
 			expect(error).to.be.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('Not Authenticated');
@@ -53,9 +53,9 @@ describe('Admin Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/admin/auth/login => POST => should fail`, async () => {
+	it(`${BASE_URL}/api/user/auth/login => POST => should fail`, async () => {
 		try {
-			const { error, text } = await adminAuth.login('wrong-username', '123abc456');
+			const { error, text } = await userAuth.login('wrong-username', '123abc456');
 
 			expect(error).to.be.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('Not Authenticated');
@@ -65,55 +65,51 @@ describe('Admin Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/admin/auth/login => POST => should success`, async () => {
+	it(`${BASE_URL}/api/user/auth/login => POST => should success`, async () => {
 		try {
-			const { body, error } = await adminAuth.login();
+			const { body, error } = await userAuth.login();
 
 			expect(error).to.be.be.false;
-			['token', 'admin'].map((prop) => expect(body).to.have.property(prop));
-			expect(body.admin).to.be.an('object');
-			expect(body.admin).not.have.property('password');
-			['id', 'username', 'role'].map((prop) => expect(body.admin).to.have.property(prop));
+			expect(body).to.be.an('object');
+			expect(body).not.have.property('password');
+			['id', 'username', 'role'].map((prop) => expect(body).to.have.property(prop));
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
 		}
 	});
 
-	it(`${BASE_URL}/api/admin/auth/login => POST => should fail`, async () => {
+	it(`${BASE_URL}/api/user/auth/login => POST => should fail`, async () => {
 		try {
-			const { error, text } = await adminAuth.login();
+			const { error, text } = await userAuth.login();
 
 			expect(error).to.be.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('You need to sign out.');
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
-		} finally {
-			await authUtils.signOut('adminToken');
 		}
 	});
 
-	it(`${BASE_URL}/api/admin/auth/me => GET => should success`, async () => {
+	it(`${BASE_URL}/api/user/auth/me => GET => should success`, async () => {
 		try {
-			const { body: loginBody } = await adminAuth.login();
-
-			const { body, error } = await adminAuth.me(loginBody.token);
+			const { body, error } = await userAuth.me();
 
 			expect(error).to.be.be.false;
+			expect(body).to.be.an('object');
 			expect(body).not.have.property('password');
 			['id', 'username', 'role'].map((prop) => expect(body).to.have.property(prop));
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
-		} finally {
-			await authUtils.signOut('adminToken');
 		}
 	});
 
-	it(`${BASE_URL}/api/admin/auth/me => GET => should fail`, async () => {
+	it(`${BASE_URL}/api/user/auth/me => GET => should fail`, async () => {
 		try {
-			const { error, text } = await adminAuth.me();
+			await authUtils.signOut('userToken');
+
+			const { error, text } = await userAuth.me();
 
 			expect(error).to.be.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('You need to sign in.');
@@ -121,5 +117,9 @@ describe('Admin Authentication routes APIs', function () {
 			console.error(error);
 			expect(true).to.be.false;
 		}
+	});
+
+	after(async () => {
+		// await authUtils.signOut('userToken');
 	});
 });

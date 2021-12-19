@@ -1,6 +1,6 @@
 export * from './wrapper';
 
-export * from './auth';
+export { default as auth } from './auth';
 
 export * from './logics';
 

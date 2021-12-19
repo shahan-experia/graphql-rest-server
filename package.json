@@ -36,7 +36,12 @@
 		"type": "git",
 		"url": "git+https://github.com/shahanahmed86/graphql-rest-server.git"
 	},
-	"keywords": ["boiler-plate", "nodejs", "apollo server express", "apollo server"],
+	"keywords": [
+		"boiler-plate",
+		"nodejs",
+		"apollo server express",
+		"apollo server"
+	],
 	"author": "Shahan",
 	"license": "MIT",
 	"bugs": {
@@ -56,11 +61,12 @@
 		"express": "^4.17.1",
 		"express-fileupload": "^1.2.1",
 		"express-session": "^1.17.2",
+		"firebase-admin": "^10.0.1",
 		"graphql": "^15.8.0",
 		"ioredis": "^4.28.2",
 		"jsonwebtoken": "^8.5.1",
-		"morgan": "^1.10.0",
-		"uuid": "^8.3.2"
+		"moment": "^2.29.1",
+		"morgan": "^1.10.0"
 	},
 	"devDependencies": {
 		"chai": "^4.3.4",

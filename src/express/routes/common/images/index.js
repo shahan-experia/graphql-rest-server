@@ -4,7 +4,7 @@ import { commonController } from '../../../../controllers';
 
 const router = express.Router();
 
-router.post('/upload', catchAsync(commonController.uploadImage));
+router.post('/', catchAsync(commonController.uploadImage));
 
 router.get('/', catchAsync(commonController.getImage));
 

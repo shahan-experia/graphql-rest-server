@@ -107,5 +107,4 @@ dist
 _builds
 
 # uploads
-src/temp
-src/uploads
+uploads

@@ -1,33 +1,31 @@
 import { existsSync, mkdirSync, unlinkSync, readFileSync, rename } from 'fs';
 import path from 'path';
-import { v4 as uuid } from 'uuid';
+import RootUtils from './root';
 
-class File {
+class File extends RootUtils {
 	constructor() {
-		this.tempPath = path.resolve(__dirname, '..', 'temp');
-		this.uploadPath = path.resolve(__dirname, '..', 'upload');
+		super();
+		this.path = './uploads';
 	}
 
-	localUpload(image, old) {
-		// deleting if old file is given
-		if (old) this.deleteOldFileLocally(old);
-
+	localUpload(image) {
 		const imageFile = image.uploadedFileName;
-		const filename = `${uuid()}-${imageFile.name}`;
+		const filename = `${this.uuid}-${imageFile.name}`;
 
-		if (!existsSync(this.tempPath)) mkdirSync(this.tempPath);
+		if (!existsSync(this.path)) mkdirSync(this.path);
+		if (!existsSync(`${this.path}/temp`)) mkdirSync(`${this.path}/temp`);
 
 		return new Promise((resolve, reject) => {
-			const uploadFile = path.join(this.tempPath, filename);
+			const uploadFile = path.join(this.path, 'temp', filename);
 			imageFile
 				.mv(uploadFile) // Use the mv() method to place the file somewhere
-				.then(() => resolve('temp/' + filename))
+				.then(() => resolve(`temp/${filename}`))
 				.catch(reject);
 		});
 	}
 
 	deleteOldFileLocally(imagePath) {
-		const path = `./src/${imagePath}`;
+		const path = `${this.path}/${imagePath}`;
 		if (existsSync(path)) {
 			unlinkSync(path);
 			return true;
@@ -37,7 +35,7 @@ class File {
 	}
 
 	getFileBuffer(imagePath) {
-		const path = `./src/${imagePath}`;
+		const path = `./uploads/${imagePath}`;
 		if (existsSync(path)) return readFileSync(path);
 
 		return readFileSync(`./src/assets/404-image.png`);
@@ -45,15 +43,16 @@ class File {
 
 	moveImageFromTmp(imagePath) {
 		return new Promise((resolve, reject) => {
-			const currentPath = path.join(this.tempPath, imagePath);
-			if (!existsSync(currentPath)) reject(new Error('Image not found'));
+			const currentPath = path.join(this.path, imagePath);
+			if (!existsSync(currentPath)) reject(new Error('404;;Image not found'));
 			else {
-				const destPath = path.join(this.uploadPath, imagePath);
-				if (!existsSync(this.uploadPath)) mkdirSync(this.uploadPath);
+				const newFile = imagePath.split('/')[1];
+				const destPath = path.join(this.path, newFile);
 
 				rename(currentPath, destPath, (err) => {
 					if (err) reject(new Error(err));
-					resolve();
+
+					resolve(newFile);
 				});
 			}
 		});
