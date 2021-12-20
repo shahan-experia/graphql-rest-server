@@ -14,14 +14,14 @@ model Admin {
   id        String    @id @default(uuid())
   username  String    @unique
   password  String
-  role      AdminRole @default(ADMIN)
+  role      AdminRole @default(MANAGER)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 
 enum AdminRole {
-  SUPER_ADMIN
-  ADMIN
+  SYSTEM
+  MANAGER
 }
 
 model User {
@@ -29,6 +29,10 @@ model User {
   username  String   @unique
   password  String
   avatar    String?
+  fullName  String?
+  email     String?
+  cell      String?
+  gender    Gender
   role      Role     @default(LOCAL)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -38,4 +42,10 @@ enum Role {
   LOCAL
   FACEBOOK
   GOOGLE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  PREFER_NOT_TO_SAY
 }

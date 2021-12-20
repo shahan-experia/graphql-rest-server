@@ -12,7 +12,7 @@ const prisma = new PrismaClient();
 				create: {
 					username: 'shahan',
 					password: bcrypt.hashSync('shahan', 10),
-					role: 'SUPER_ADMIN',
+					role: 'SYSTEM',
 				},
 			})
 			.then(console.log);

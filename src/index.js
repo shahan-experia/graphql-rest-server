@@ -11,11 +11,7 @@ import { APP_HOST, APP_PORT, APP_PROTOCOL } from './config';
 const httpServer = http.createServer(app);
 
 let schema = makeExecutableSchema({ typeDefs, resolvers });
-
-Object.entries(directives).map(([key, directive]) => {
-	schema = directive(schema, key);
-	return schema;
-});
+Object.entries(directives).forEach(([key, directive]) => (schema = directive(schema, key)));
 
 const server = new ApolloServer({
 	introspection: true,

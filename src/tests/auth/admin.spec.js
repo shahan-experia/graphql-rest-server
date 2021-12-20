@@ -3,7 +3,7 @@ import 'dotenv/config';
 import chai from 'chai';
 import { BASE_URL } from '../../config';
 import { adminAuth } from '../helper';
-import { auth as authUtils } from '../../utils';
+import { auth } from '../../utils';
 
 const { expect } = chai;
 
@@ -12,7 +12,7 @@ describe('Admin Authentication routes APIs', function () {
 	this.slow(1000);
 
 	before(async () => {
-		await authUtils.signOut('adminToken');
+		await auth.signOut('adminToken');
 	});
 
 	it(`${BASE_URL}/api/admin/auth/logout => DEL => should success`, async () => {
@@ -90,7 +90,7 @@ describe('Admin Authentication routes APIs', function () {
 			console.error(error);
 			expect(true).to.be.false;
 		} finally {
-			await authUtils.signOut('adminToken');
+			await auth.signOut('adminToken');
 		}
 	});
 
@@ -107,7 +107,7 @@ describe('Admin Authentication routes APIs', function () {
 			console.error(error);
 			expect(true).to.be.false;
 		} finally {
-			await authUtils.signOut('adminToken');
+			await auth.signOut('adminToken');
 		}
 	});
 

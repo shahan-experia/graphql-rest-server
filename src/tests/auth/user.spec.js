@@ -3,7 +3,7 @@ import 'dotenv/config';
 import chai from 'chai';
 import { BASE_URL } from '../../config';
 import { userAuth } from '../helper';
-import { auth as authUtils } from '../../utils';
+import { auth } from '../../utils';
 
 const { expect } = chai;
 
@@ -12,14 +12,14 @@ describe('User Authentication routes APIs', function () {
 	this.slow(1000);
 
 	before(async () => {
-		await authUtils.signOut('userToken');
+		await auth.signOut('userToken');
 	});
 
 	it(`${BASE_URL}/api/user/auth/logout => DEL => should success`, async () => {
 		try {
-			await userAuth.login();
+			const { body } = await userAuth.login();
 
-			const { error, text } = await userAuth.logout();
+			const { error, text } = await userAuth.logout(body.token);
 
 			expect(error).to.be.be.false;
 			expect(text).to.be.a.string("You've successfully signed out.");
@@ -70,9 +70,10 @@ describe('User Authentication routes APIs', function () {
 			const { body, error } = await userAuth.login();
 
 			expect(error).to.be.be.false;
-			expect(body).to.be.an('object');
-			expect(body).not.have.property('password');
-			['id', 'username', 'role'].map((prop) => expect(body).to.have.property(prop));
+			['token', 'user'].map((prop) => expect(body).to.have.property(prop));
+			expect(body.user).to.be.an('object');
+			expect(body.user).not.have.property('password');
+			['id', 'username', 'role'].map((prop) => expect(body.user).to.have.property(prop));
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
@@ -88,12 +89,16 @@ describe('User Authentication routes APIs', function () {
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
+		} finally {
+			await auth.signOut('userToken');
 		}
 	});
 
 	it(`${BASE_URL}/api/user/auth/me => GET => should success`, async () => {
 		try {
-			const { body, error } = await userAuth.me();
+			const { body: loginBody } = await userAuth.login();
+
+			const { body, error } = await userAuth.me(loginBody.token);
 
 			expect(error).to.be.be.false;
 			expect(body).to.be.an('object');
@@ -102,13 +107,13 @@ describe('User Authentication routes APIs', function () {
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
+		} finally {
+			await auth.signOut('userToken');
 		}
 	});
 
 	it(`${BASE_URL}/api/user/auth/me => GET => should fail`, async () => {
 		try {
-			await authUtils.signOut('userToken');
-
 			const { error, text } = await userAuth.me();
 
 			expect(error).to.be.be.an.instanceOf(Error);
@@ -117,9 +122,5 @@ describe('User Authentication routes APIs', function () {
 			console.error(error);
 			expect(true).to.be.false;
 		}
-	});
-
-	after(async () => {
-		// await authUtils.signOut('userToken');
 	});
 });
