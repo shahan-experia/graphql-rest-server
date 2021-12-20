@@ -21,7 +21,7 @@ describe('User Authentication routes APIs', function () {
 
 			const { error, text } = await userAuth.logout(body.token);
 
-			expect(error).to.be.be.false;
+			expect(error).to.be.false;
 			expect(text).to.be.a.string("You've successfully signed out.");
 		} catch (error) {
 			console.error(error);
@@ -33,7 +33,7 @@ describe('User Authentication routes APIs', function () {
 		try {
 			const { error, text } = await userAuth.logout();
 
-			expect(error).to.be.be.an.instanceOf(Error);
+			expect(error).to.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('You need to sign in.');
 		} catch (error) {
 			console.error(error);
@@ -45,7 +45,7 @@ describe('User Authentication routes APIs', function () {
 		try {
 			const { error, text } = await userAuth.login('shahan', 'wrong-password');
 
-			expect(error).to.be.be.an.instanceOf(Error);
+			expect(error).to.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('Not Authenticated');
 		} catch (error) {
 			console.error(error);
@@ -57,7 +57,7 @@ describe('User Authentication routes APIs', function () {
 		try {
 			const { error, text } = await userAuth.login('wrong-username', '123abc456');
 
-			expect(error).to.be.be.an.instanceOf(Error);
+			expect(error).to.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('Not Authenticated');
 		} catch (error) {
 			console.error(error);
@@ -69,7 +69,7 @@ describe('User Authentication routes APIs', function () {
 		try {
 			const { body, error } = await userAuth.login();
 
-			expect(error).to.be.be.false;
+			expect(error).to.be.false;
 			['token', 'user'].map((prop) => expect(body).to.have.property(prop));
 			expect(body.user).to.be.an('object');
 			expect(body.user).not.have.property('password');
@@ -84,7 +84,7 @@ describe('User Authentication routes APIs', function () {
 		try {
 			const { error, text } = await userAuth.login();
 
-			expect(error).to.be.be.an.instanceOf(Error);
+			expect(error).to.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('You need to sign out.');
 		} catch (error) {
 			console.error(error);
@@ -100,7 +100,7 @@ describe('User Authentication routes APIs', function () {
 
 			const { body, error } = await userAuth.me(loginBody.token);
 
-			expect(error).to.be.be.false;
+			expect(error).to.be.false;
 			expect(body).to.be.an('object');
 			expect(body).not.have.property('password');
 			['id', 'username', 'role'].map((prop) => expect(body).to.have.property(prop));
@@ -116,7 +116,7 @@ describe('User Authentication routes APIs', function () {
 		try {
 			const { error, text } = await userAuth.me();
 
-			expect(error).to.be.be.an.instanceOf(Error);
+			expect(error).to.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('You need to sign in.');
 		} catch (error) {
 			console.error(error);

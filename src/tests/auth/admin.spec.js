@@ -21,7 +21,7 @@ describe('Admin Authentication routes APIs', function () {
 
 			const { error, text } = await adminAuth.logout(body.token);
 
-			expect(error).to.be.be.false;
+			expect(error).to.be.false;
 			expect(text).to.be.a.string("You've successfully signed out.");
 		} catch (error) {
 			console.error(error);
@@ -33,7 +33,7 @@ describe('Admin Authentication routes APIs', function () {
 		try {
 			const { error, text } = await adminAuth.logout();
 
-			expect(error).to.be.be.an.instanceOf(Error);
+			expect(error).to.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('You need to sign in.');
 		} catch (error) {
 			console.error(error);
@@ -45,7 +45,7 @@ describe('Admin Authentication routes APIs', function () {
 		try {
 			const { error, text } = await adminAuth.login('shahan', 'wrong-password');
 
-			expect(error).to.be.be.an.instanceOf(Error);
+			expect(error).to.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('Not Authenticated');
 		} catch (error) {
 			console.error(error);
@@ -57,7 +57,7 @@ describe('Admin Authentication routes APIs', function () {
 		try {
 			const { error, text } = await adminAuth.login('wrong-username', '123abc456');
 
-			expect(error).to.be.be.an.instanceOf(Error);
+			expect(error).to.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('Not Authenticated');
 		} catch (error) {
 			console.error(error);
@@ -69,7 +69,7 @@ describe('Admin Authentication routes APIs', function () {
 		try {
 			const { body, error } = await adminAuth.login();
 
-			expect(error).to.be.be.false;
+			expect(error).to.be.false;
 			['token', 'admin'].map((prop) => expect(body).to.have.property(prop));
 			expect(body.admin).to.be.an('object');
 			expect(body.admin).not.have.property('password');
@@ -84,7 +84,7 @@ describe('Admin Authentication routes APIs', function () {
 		try {
 			const { error, text } = await adminAuth.login();
 
-			expect(error).to.be.be.an.instanceOf(Error);
+			expect(error).to.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('You need to sign out.');
 		} catch (error) {
 			console.error(error);
@@ -100,7 +100,7 @@ describe('Admin Authentication routes APIs', function () {
 
 			const { body, error } = await adminAuth.me(loginBody.token);
 
-			expect(error).to.be.be.false;
+			expect(error).to.be.false;
 			expect(body).not.have.property('password');
 			['id', 'username', 'role'].map((prop) => expect(body).to.have.property(prop));
 		} catch (error) {
@@ -115,7 +115,7 @@ describe('Admin Authentication routes APIs', function () {
 		try {
 			const { error, text } = await adminAuth.me();
 
-			expect(error).to.be.be.an.instanceOf(Error);
+			expect(error).to.be.an.instanceOf(Error);
 			expect(text).to.be.a.string('You need to sign in.');
 		} catch (error) {
 			console.error(error);
