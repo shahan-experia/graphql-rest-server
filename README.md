@@ -39,7 +39,7 @@ redis-cli # to load redis command line interface
 -a # cli password
 # redis commands
 scan 0
-get "sess:lHoGnDimxq3Lz5j0cRWuEp3wivXtgSBB"
-ttl "sess:lHoGnDimxq3Lz5j0cRWuEp3wivXtgSBB"
-del "sess:lHoGnDimxq3Lz5j0cRWuEp3wivXtgSBB"
+get "adminToken"
+ttl "adminToken"
+del "adminToken"
 ```

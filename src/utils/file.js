@@ -59,6 +59,4 @@ class File extends RootUtils {
 	}
 }
 
-const file = new File();
-
-export default file;
+export default new File();

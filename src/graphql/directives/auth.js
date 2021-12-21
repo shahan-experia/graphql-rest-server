@@ -2,7 +2,7 @@ import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import { defaultFieldResolver } from 'graphql';
 import { middleware } from '../../controllers';
-import { catchError } from '../../utils';
+import { logics } from '../../utils';
 
 function AuthDirective(schema, directiveName) {
 	return mapSchema(schema, {
@@ -14,9 +14,12 @@ function AuthDirective(schema, directiveName) {
 
 				field.resolve = async (...args) => {
 					try {
-						args[2].req.user = await middleware.ensureSignIn(authDirective[0]);
+						args[2].req.user = await middleware.ensureSignIn(
+							authDirective[0],
+							args[2].req.get('Authorization') || args[2].req.headers.Authorization,
+						);
 					} catch (error) {
-						const { statusCode, errorMessage } = catchError(error);
+						const { statusCode, errorMessage } = logics.catchError(error);
 						switch (statusCode) {
 							case '401': {
 								throw new AuthenticationError(errorMessage);

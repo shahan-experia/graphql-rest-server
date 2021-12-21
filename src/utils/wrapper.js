@@ -1,5 +1,5 @@
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
-import { catchError } from '.';
+import logics from './logics';
 
 export const restWrapper = async function ([req, res], controller) {
 	try {
@@ -10,7 +10,7 @@ export const restWrapper = async function ([req, res], controller) {
 		const result = await controller(root, args, { req, res });
 		res.status(200).send(result);
 	} catch (error) {
-		const { statusCode, errorMessage } = catchError(error);
+		const { statusCode, errorMessage } = logics.catchError(error);
 		res.status(statusCode).send(errorMessage);
 	}
 };
@@ -20,7 +20,7 @@ export const graphqlWrapper = async function (args, controller) {
 		const result = await controller(...args);
 		return result;
 	} catch (error) {
-		const { statusCode, errorMessage } = catchError(error);
+		const { statusCode, errorMessage } = logics.catchError(error);
 		switch (statusCode) {
 			case '401': {
 				throw new AuthenticationError(errorMessage);
@@ -40,7 +40,7 @@ export const catchAsync =
 			const result = await handler(...args);
 			return result;
 		} catch (error) {
-			const { statusCode, errorMessage } = catchError(error);
+			const { statusCode, errorMessage } = logics.catchError(error);
 			res.status(statusCode).send(errorMessage);
 		}
 	};

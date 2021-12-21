@@ -1,5 +1,5 @@
 import { middleware } from '../controllers';
-import { catchError } from '../utils';
+import { logics } from '../utils';
 
 export const ensureSignedIn = (args) => async (req, res, next) => {
 	try {
@@ -10,7 +10,7 @@ export const ensureSignedIn = (args) => async (req, res, next) => {
 
 		next();
 	} catch (error) {
-		const { statusCode, errorMessage } = catchError(error);
+		const { statusCode, errorMessage } = logics.catchError(error);
 		res.status(statusCode).send(errorMessage);
 	}
 };
@@ -21,7 +21,7 @@ export const ensureSignedOut = (args) => async (req, res, next) => {
 
 		next();
 	} catch (error) {
-		const { statusCode, errorMessage } = catchError(error);
+		const { statusCode, errorMessage } = logics.catchError(error);
 		res.status(statusCode).send(errorMessage);
 	}
 };

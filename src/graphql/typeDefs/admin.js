@@ -13,9 +13,14 @@ const rootSchema = gql`
 	}
 
 	extend type Mutation {
-		loginAdmin(username: String!, password: String!): Admin! @guest(shouldAdmin: true)
+		loginAdmin(username: String!, password: String!): AuthAdmin! @guest(shouldAdmin: true)
     logoutAdmin: String! @auth(shouldAdmin: true)
 	}
+
+  type AuthAdmin {
+    token: String!
+    admin: Admin!
+  }
 `;
 
 export default rootSchema;

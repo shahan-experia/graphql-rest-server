@@ -6,7 +6,7 @@ import app from '../..';
 
 chai.use(chaiHttp);
 
-export function login(username = 'shahan', password = '123abc456') {
+export function login(username = 'test-user', password = '123abc456') {
 	return chai
 		.request(app)
 		.post(`/api/user/auth/login`)

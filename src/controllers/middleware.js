@@ -1,5 +1,5 @@
 import { prisma } from '../library';
-import { validateToken, getToken } from '../utils';
+import { logics } from '../utils';
 
 export async function ensureSignIn({ shouldAdmin, shouldUser }, receivedToken) {
 	if (!receivedToken) throw new Error('401;;You need to sign in.');
@@ -8,7 +8,7 @@ export async function ensureSignIn({ shouldAdmin, shouldUser }, receivedToken) {
 	if (shouldAdmin) tokenKey = 'adminToken';
 	else if (shouldUser) tokenKey = 'userToken';
 
-	const { adminId, userId } = await validateToken(tokenKey, receivedToken);
+	const { adminId, userId } = await logics.validateToken(tokenKey, receivedToken);
 
 	let data;
 	if (adminId) {
@@ -43,6 +43,6 @@ export async function ensureSignOut({ shouldAdmin, shouldUser }, receivedToken) 
 	if (shouldAdmin) tokenKey = 'adminToken';
 	else if (shouldUser) tokenKey = 'userToken';
 
-	const tokenFound = await getToken(tokenKey);
+	const tokenFound = await logics.getToken(tokenKey);
 	if (tokenFound) throw new Error('401;;You need to sign out.');
 }

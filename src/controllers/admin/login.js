@@ -2,8 +2,11 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { prisma, redis } from '../../library';
 import { JWT_SECRET } from '../../config';
+import { validations } from '../../utils';
 
 async function login(root, args, ctx) {
+	await validations.validate(validations.schemas.admin.login, args);
+
 	const admin = await prisma.admin
 		.findFirst({
 			where: { username: args.username },

@@ -2,9 +2,11 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { BCRYPT_SALT, JWT_SECRET } from '../../config';
 import { prisma, redis } from '../../library';
-import { file } from '../../utils';
+import { file, validations } from '../../utils';
 
 async function signup(root, args, ctx) {
+	await validations.validate(validations.schemas.user.signup, args);
+
 	const { username, avatar } = args;
 
 	const userFound = await prisma.user.findFirst({ where: { username } });

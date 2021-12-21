@@ -7,12 +7,12 @@ import app from '../..';
 
 chai.use(chaiHttp);
 
-export function uploadImage() {
+export function uploadImage(imagePath = './src/assets/appstore.png') {
 	return chai
 		.request(app)
 		.post(`/api/common/images`)
 		.set('content-type', 'multipart/form-data')
-		.attach('uploadedFileName', fs.readFileSync('./src/assets/appstore.png'), {
+		.attach('uploadedFileName', fs.readFileSync(imagePath), {
 			contentType: 'image/png',
 			filename: 'appstore.png',
 		});

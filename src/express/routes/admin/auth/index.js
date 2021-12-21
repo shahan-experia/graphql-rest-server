@@ -17,4 +17,10 @@ router.delete('/logout', ensureSignedIn({ shouldAdmin: true, shouldUser: false }
 	catchAsync(restWrapper(args, adminController.logout)),
 );
 
+router.put(
+	'/change-password',
+	ensureSignedIn({ shouldAdmin: true, shouldUser: false }),
+	(...args) => catchAsync(restWrapper(args, adminController.changePassword)),
+);
+
 export default router;
