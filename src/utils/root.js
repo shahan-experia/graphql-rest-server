@@ -14,16 +14,18 @@ function messages(type) {
 class RootUtils {
 	constructor() {
 		this.allSchemas = {
+			firebaseToken: Joi.string().disallow(null).required().messages(messages('Firebase Token')),
+
 			username: Joi.string()
 				.min(3)
 				.max(50)
-				.disallow(null, '')
+				.disallow(null)
 				.required()
 				.messages(messages('Username')),
 			password: Joi.string()
 				.min(6)
 				.max(50)
-				.disallow(null, '')
+				.disallow(null)
 				.required()
 				.messages(messages('Password')),
 			avatar: Joi.string().allow(null).disallow('').optional().messages(messages('Avatar')),

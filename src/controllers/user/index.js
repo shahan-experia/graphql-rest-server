@@ -1,3 +1,7 @@
+export { default as changePassword } from './changePassword';
+
+export { default as social } from './social';
+
 export { default as login } from './login';
 
 export { default as me } from './me';

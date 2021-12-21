@@ -20,13 +20,13 @@ describe('User Authentication routes APIs', function () {
 		await auth.signOut('userToken');
 	});
 
-	it(`${BASE_URL}/api/user/auth/signup => POST => should success`, async () => {
+	it(`${BASE_URL}/api/app/auth/signup => POST => should success`, async () => {
 		try {
 			const { body: image } = await common.uploadImage();
 
 			const { body, error } = await chai
 				.request(app)
-				.post(`/api/user/auth/signup`)
+				.post(`/api/app/auth/signup`)
 				.set('content-type', 'application/json')
 				.field('username', 'test-user')
 				.field('password', '123abc456')
@@ -49,7 +49,7 @@ describe('User Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/user/auth/logout => DEL => should success`, async () => {
+	it(`${BASE_URL}/api/app/auth/logout => DEL => should success`, async () => {
 		try {
 			const { body } = await userAuth.login();
 
@@ -63,7 +63,7 @@ describe('User Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/user/auth/logout => DEL => should fail`, async () => {
+	it(`${BASE_URL}/api/app/auth/logout => DEL => should fail`, async () => {
 		try {
 			const { error, text } = await userAuth.logout();
 
@@ -75,7 +75,7 @@ describe('User Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/user/auth/login => POST => should fail`, async () => {
+	it(`${BASE_URL}/api/app/auth/login => POST => should fail`, async () => {
 		try {
 			const { error, text } = await userAuth.login('shahan', 'wrong-password');
 
@@ -87,7 +87,7 @@ describe('User Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/user/auth/login => POST => should fail`, async () => {
+	it(`${BASE_URL}/api/app/auth/login => POST => should fail`, async () => {
 		try {
 			const { error, text } = await userAuth.login('wrong-username', '123abc456');
 
@@ -99,7 +99,7 @@ describe('User Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/user/auth/login => POST => should success`, async () => {
+	it(`${BASE_URL}/api/app/auth/login => POST => should success`, async () => {
 		try {
 			const { body, error } = await userAuth.login();
 
@@ -116,7 +116,7 @@ describe('User Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/user/auth/login => POST => should fail`, async () => {
+	it(`${BASE_URL}/api/app/auth/login => POST => should fail`, async () => {
 		try {
 			await userAuth.login();
 
@@ -132,7 +132,7 @@ describe('User Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/user/auth/me => GET => should success`, async () => {
+	it(`${BASE_URL}/api/app/auth/me => GET => should success`, async () => {
 		try {
 			const { body: loginBody } = await userAuth.login();
 
@@ -150,7 +150,7 @@ describe('User Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/user/auth/me => GET => should fail`, async () => {
+	it(`${BASE_URL}/api/app/auth/me => GET => should fail`, async () => {
 		try {
 			const { error, text } = await userAuth.me();
 
@@ -159,6 +159,94 @@ describe('User Authentication routes APIs', function () {
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
+		}
+	});
+
+	it(`${BASE_URL}/api/app/auth/change-password => PUT => should fail`, async () => {
+		try {
+			const { body: loginBody } = await userAuth.login();
+
+			const { error, text } = await chai
+				.request(app)
+				.put('/api/app/auth/change-password')
+				.set('content-type', 'application/json')
+				.set('Authorization', `Bearer ${loginBody.token}`)
+				.field('oldPassword', 'wrong-password')
+				.field('password', 'shahan');
+
+			expect(error).to.be.an.instanceOf(Error);
+			expect(text).to.be.a.string('Old password mismatched');
+		} catch (error) {
+			console.error(error);
+			expect(true).to.be.false;
+		} finally {
+			await auth.signOut('userToken');
+		}
+	});
+
+	it(`${BASE_URL}/api/app/auth/change-password => PUT => should fail`, async () => {
+		try {
+			const { body: loginBody } = await userAuth.login();
+
+			const { error, text } = await chai
+				.request(app)
+				.put('/api/app/auth/change-password')
+				.set('content-type', 'application/json')
+				.set('Authorization', `Bearer ${loginBody.token}`)
+				.field('oldPassword', '123abc456')
+				.field('password', '123abc456');
+
+			expect(error).to.be.an.instanceOf(Error);
+			expect(text).to.be.a.string('Your new password cannot be same as the old one');
+		} catch (error) {
+			console.error(error);
+			expect(true).to.be.false;
+		} finally {
+			await auth.signOut('userToken');
+		}
+	});
+
+	it(`${BASE_URL}/api/app/auth/change-password => PUT => should success`, async () => {
+		try {
+			const { body: loginBody } = await userAuth.login();
+
+			const { error, text } = await chai
+				.request(app)
+				.put('/api/app/auth/change-password')
+				.set('content-type', 'application/json')
+				.set('Authorization', `Bearer ${loginBody.token}`)
+				.field('oldPassword', '123abc456')
+				.field('password', 'shahan1');
+
+			expect(error).to.be.false;
+			expect(text).to.be.a.string('Password changed successfully');
+		} catch (error) {
+			console.error(error);
+			expect(true).to.be.false;
+		} finally {
+			await auth.signOut('userToken');
+		}
+	});
+
+	it(`${BASE_URL}/api/app/auth/change-password => PUT => should success`, async () => {
+		try {
+			const { body: loginBody } = await userAuth.login('test-user', 'shahan1');
+
+			const { error, text } = await chai
+				.request(app)
+				.put('/api/app/auth/change-password')
+				.set('content-type', 'application/json')
+				.set('Authorization', `Bearer ${loginBody.token}`)
+				.field('oldPassword', 'shahan1')
+				.field('password', '123abc456');
+
+			expect(error).to.be.false;
+			expect(text).to.be.a.string('Password changed successfully');
+		} catch (error) {
+			console.error(error);
+			expect(true).to.be.false;
+		} finally {
+			await auth.signOut('userToken');
 		}
 	});
 

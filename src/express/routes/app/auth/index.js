@@ -13,12 +13,22 @@ router.post('/login', ensureSignedOut({ shouldAdmin: false, shouldUser: true }),
 	catchAsync(restWrapper(args, userController.login)),
 );
 
+router.post('/social', ensureSignedOut({ shouldAdmin: false, shouldUser: true }), (...args) =>
+	catchAsync(restWrapper(args, userController.social)),
+);
+
 router.delete('/logout', ensureSignedIn({ shouldAdmin: false, shouldUser: true }), (...args) =>
 	catchAsync(restWrapper(args, userController.logout)),
 );
 
 router.post('/signup', ensureSignedOut({ shouldAdmin: false, shouldUser: true }), (...args) =>
 	catchAsync(restWrapper(args, userController.signup)),
+);
+
+router.put(
+	'/change-password',
+	ensureSignedIn({ shouldAdmin: false, shouldUser: true }),
+	(...args) => catchAsync(restWrapper(args, userController.changePassword)),
 );
 
 export default router;

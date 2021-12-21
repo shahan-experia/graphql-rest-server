@@ -1,4 +1,4 @@
-import { redis, firebase } from '../library';
+import { redis, firebase, prisma } from '../library';
 import RootUtils from './root';
 
 class Auth extends RootUtils {
@@ -11,36 +11,42 @@ class Auth extends RootUtils {
 		});
 	}
 
-	async firebaseAuth(firebaseToken, user) {
-		if (user.firebase_uid) throw new Error("You've already login with social...");
-
+	async firebaseAuth(firebaseToken) {
 		const { uid } = await firebase.auth().verifyIdToken(firebaseToken);
 
-		const userRecord = await this.getFirebaseUser(uid);
-
-		return this.getOrCreateUser(userRecord, user);
-	}
-
-	async getFirebaseUser(uid) {
-		return firebase
+		const userRecord = await firebase
 			.auth()
 			.getUser(uid)
 			.then((userRecord) => userRecord.toJSON());
+
+		return this.getOrCreateUser(userRecord);
 	}
 
-	getOrCreateUser({ uid, email, displayName, phoneNumber, photoURL, providerData }) {
+	async getOrCreateUser({
+		uid: firebaseUID,
+		email,
+		displayName: fullName,
+		phoneNumber: cell,
+		photoURL: avatar,
+		providerData,
+	}) {
 		const [provider] = providerData.map(({ providerId }) => providerId);
 
-		const upsertData = {
-			provider: provider.split('.')[0].toUpperCase(),
-			uid,
-			displayName,
+		const data = {
+			role: provider.split('.')[0].toUpperCase(),
+			firebaseUID,
+			fullName,
 			email,
-			phoneNumber,
-			photoURL,
+			cell,
+			avatar,
 		};
 
-		return upsertData;
+		let user = await prisma.user.findFirst({ where: { firebaseUID } });
+
+		if (!user) user = await prisma.user.create({ data });
+		// else user = await prisma.user.update({ where: { id: user.id }, data });
+
+		return user;
 	}
 }
 

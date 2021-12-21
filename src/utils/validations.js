@@ -34,6 +34,9 @@ class Validations extends RootUtils {
 					cell: this.allSchemas.cell,
 					gender: this.allSchemas.gender,
 				}),
+				social: Joi.object().keys({
+					firebaseToken: this.allSchemas.firebaseToken,
+				}),
 			},
 		};
 	}

@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 export function login(username = 'test-user', password = '123abc456') {
 	return chai
 		.request(app)
-		.post(`/api/user/auth/login`)
+		.post(`/api/app/auth/login`)
 		.set('content-type', 'application/json')
 		.field('username', username)
 		.field('password', password);
@@ -18,7 +18,7 @@ export function login(username = 'test-user', password = '123abc456') {
 export function me(token) {
 	return chai
 		.request(app)
-		.get(`/api/user/auth/me`)
+		.get(`/api/app/auth/me`)
 		.set('content-type', 'application/json')
 		.set('Authorization', `Bearer ${token}`);
 }
@@ -26,7 +26,7 @@ export function me(token) {
 export function logout(token) {
 	return chai
 		.request(app)
-		.delete(`/api/user/auth/logout`)
+		.delete(`/api/app/auth/logout`)
 		.set('content-type', 'application/json')
 		.set('Authorization', `Bearer ${token}`);
 }
