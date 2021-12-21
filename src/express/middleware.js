@@ -17,7 +17,7 @@ export const ensureSignedIn = (args) => async (req, res, next) => {
 
 export const ensureSignedOut = (args) => async (req, res, next) => {
 	try {
-		await middleware.ensureSignOut(args, req.get('Authorization') || req.headers.Authorization);
+		await middleware.ensureSignOut(args);
 
 		next();
 	} catch (error) {

@@ -11,13 +11,13 @@ datasource db {
 }
 
 model Admin {
-  id         String    @id @default(uuid())
-  username   String    @unique
-  password   String
-  role       AdminRole @default(MANAGER)
-  is_deleted Boolean   @default(false)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id        String    @id @default(uuid())
+  username  String
+  password  String
+  role      AdminRole @default(MANAGER)
+  isDeleted Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 enum AdminRole {
@@ -26,22 +26,22 @@ enum AdminRole {
 }
 
 model User {
-  id          String   @id @default(uuid())
+  id          String     @id @default(uuid())
   firebaseUID String?
-  username    String?  @unique
+  username    String?
   password    String?
   avatar      String?
   fullName    String?
   email       String?
   cell        String?
   gender      Gender?
-  role        Role?    @default(LOCAL)
-  is_deleted  Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  signUpType  SignUpType @default(LOCAL)
+  isDeleted   Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
-enum Role {
+enum SignUpType {
   LOCAL
   FACEBOOK
   GOOGLE

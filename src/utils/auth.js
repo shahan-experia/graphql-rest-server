@@ -33,7 +33,7 @@ class Auth extends RootUtils {
 		const [provider] = providerData.map(({ providerId }) => providerId);
 
 		const data = {
-			role: provider.split('.')[0].toUpperCase(),
+			signUpType: provider.split('.')[0].toUpperCase(),
 			firebaseUID,
 			fullName,
 			email,
@@ -41,11 +41,10 @@ class Auth extends RootUtils {
 			avatar,
 		};
 
-		let user = await prisma.user.findFirst({ where: { firebaseUID } });
-
+		let user = await prisma.user.findFirst({ where: { firebaseUID, isDeleted: { not: true } } });
 		if (!user) user = await prisma.user.create({ data });
-		// else user = await prisma.user.update({ where: { id: user.id }, data });
 
+		delete user.password;
 		return user;
 	}
 }

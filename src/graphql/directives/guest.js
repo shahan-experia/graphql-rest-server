@@ -14,10 +14,7 @@ function GuestDirective(schema, directiveName) {
 
 				field.resolve = async (...args) => {
 					try {
-						await middleware.ensureSignOut(
-							guestDirective[0],
-							args[2].req.get('Authorization') || args[2].req.headers.Authorization,
-						);
+						await middleware.ensureSignOut(guestDirective[0]);
 					} catch (error) {
 						const { statusCode, errorMessage } = logics.catchError(error);
 						switch (statusCode) {

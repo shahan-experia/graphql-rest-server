@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server-express';
 
-const rootSchema = gql`
+const adminSchema = gql`
   type Admin {
     id: ID!
     username: String!
@@ -8,19 +8,20 @@ const rootSchema = gql`
     updatedAt: Date!
   }
 
+  type AuthAdmin {
+    token: String!
+    admin: Admin!
+  }
+
 	extend type Query {
-		me: Admin! @auth(shouldAdmin: true)
+		loggedInAdmin: Admin! @auth(shouldAdmin: true)
 	}
 
 	extend type Mutation {
 		loginAdmin(username: String!, password: String!): AuthAdmin! @guest(shouldAdmin: true)
     logoutAdmin: String! @auth(shouldAdmin: true)
+    changeAdminPassword(oldPassword: String!, password: String!): String! @auth(shouldAdmin: true)
 	}
-
-  type AuthAdmin {
-    token: String!
-    admin: Admin!
-  }
 `;
 
-export default rootSchema;
+export default adminSchema;

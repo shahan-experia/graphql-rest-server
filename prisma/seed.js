@@ -5,17 +5,16 @@ const prisma = new PrismaClient();
 
 (async () => {
 	try {
-		return prisma.admin
-			.upsert({
-				where: { username: 'shahan' },
-				update: {},
-				create: {
-					username: 'shahan',
-					password: bcrypt.hashSync('shahan', 10),
-					role: 'SYSTEM',
-				},
-			})
-			.then(console.log);
+		const data = {
+			username: 'shahan',
+			password: bcrypt.hashSync('shahan', 10),
+			role: 'SYSTEM',
+		};
+		let user = await prisma.admin.findFirst({ where: { username: 'shahan' } });
+		if (!user) user = await prisma.admin.create({ data });
+
+		console.log('prisma seeds.......... : ', user);
+		return user;
 	} catch (error) {
 		console.error(error);
 		process.exit(1);

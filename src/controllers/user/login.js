@@ -6,7 +6,7 @@ import { JWT_SECRET } from '../../config';
 async function login(root, args, ctx) {
 	const user = await prisma.user
 		.findFirst({
-			where: { username: args.username },
+			where: { username: args.username, isDeleted: { not: true } },
 		})
 		.then((user) => {
 			if (!user || !bcrypt.compareSync(args.password, user.password)) {

@@ -40,7 +40,7 @@ describe('User Authentication routes APIs', function () {
 			['token', 'user'].map((prop) => expect(body).to.have.property(prop));
 			expect(body.user).to.be.an('object');
 			expect(body.user).not.have.property('password');
-			['id', 'username', 'role'].map((prop) => expect(body.user).to.have.property(prop));
+			['id', 'username', 'signUpType'].map((prop) => expect(body.user).to.have.property(prop));
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
@@ -107,7 +107,7 @@ describe('User Authentication routes APIs', function () {
 			['token', 'user'].map((prop) => expect(body).to.have.property(prop));
 			expect(body.user).to.be.an('object');
 			expect(body.user).not.have.property('password');
-			['id', 'username', 'role'].map((prop) => expect(body.user).to.have.property(prop));
+			['id', 'username', 'signUpType'].map((prop) => expect(body.user).to.have.property(prop));
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
@@ -141,7 +141,7 @@ describe('User Authentication routes APIs', function () {
 			expect(error).to.be.false;
 			expect(body).to.be.an('object');
 			expect(body).not.have.property('password');
-			['id', 'username', 'role'].map((prop) => expect(body).to.have.property(prop));
+			['id', 'username', 'signUpType'].map((prop) => expect(body).to.have.property(prop));
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
@@ -252,6 +252,7 @@ describe('User Authentication routes APIs', function () {
 
 	after(async () => {
 		logics.executeCommand('rm uploads/*.*');
-		await prisma.user.delete({ where: { username: 'test-user' } });
+		const userFound = await prisma.user.findFirst({ where: { username: 'test-user' } });
+		if (userFound) await prisma.user.delete({ where: { id: userFound.id } });
 	});
 });
