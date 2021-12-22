@@ -6,7 +6,7 @@ import { validations } from '../../utils';
 async function changePassword(root, args, ctx) {
 	await validations.validate(validations.schemas.admin.changePassword, args);
 
-	const admin = await prisma.admin.findUnique({ where: { id: ctx.req.user.id } });
+	const admin = ctx.req.user;
 
 	if (!bcrypt.compareSync(args.oldPassword, admin.password)) {
 		throw new Error('409;;Old password mismatched');

@@ -1,3 +1,4 @@
+import logics from './logics';
 import { redis, firebase, prisma } from '../library';
 import RootUtils from './root';
 
@@ -14,12 +15,9 @@ class Auth extends RootUtils {
 	async firebaseAuth(firebaseToken) {
 		const { uid } = await firebase.auth().verifyIdToken(firebaseToken);
 
-		const userRecord = await firebase
-			.auth()
-			.getUser(uid)
-			.then((userRecord) => userRecord.toJSON());
+		const userRecord = await firebase.auth().getUser(uid);
 
-		return this.getOrCreateUser(userRecord);
+		return this.getOrCreateUser(userRecord.toJSON());
 	}
 
 	async getOrCreateUser({
@@ -41,11 +39,10 @@ class Auth extends RootUtils {
 			avatar,
 		};
 
-		let user = await prisma.user.findFirst({ where: { firebaseUID, isDeleted: { not: true } } });
+		let user = await prisma.user.findFirst({ where: { firebaseUID, ...logics.includePreWhere } });
 		if (!user) user = await prisma.user.create({ data });
 
-		delete user.password;
-		return user;
+		return logics.excludePropsFromUser(user);
 	}
 }
 

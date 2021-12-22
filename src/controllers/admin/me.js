@@ -1,7 +1,7 @@
-function me(root, args, ctx) {
-	const { type, password, ...user } = ctx.req.user;
+import { logics } from '../../utils';
 
-	return user;
+function me(root, args, ctx) {
+	return logics.excludePropsFromAdmin(ctx.req.user);
 }
 
 export default me;

@@ -59,6 +59,18 @@ class RootUtils {
 		return Date.now();
 	}
 
+	get includePreWhere() {
+		return { isDeleted: { not: true } };
+	}
+
+	excludePropsFromAdmin({ password, isDeleted, ...admin }) {
+		return admin;
+	}
+
+	excludePropsFromUser({ password, isDeleted, firebaseUID, ...user }) {
+		return user;
+	}
+
 	catchError(error) {
 		let statusCode = 409;
 		let errorMessage = 'Something went wrong';

@@ -13,6 +13,7 @@ const prisma = new PrismaClient();
 		let user = await prisma.admin.findFirst({ where: { username: 'shahan' } });
 		if (!user) user = await prisma.admin.create({ data });
 
+		delete user.password;
 		console.log('prisma seeds.......... : ', user);
 		return user;
 	} catch (error) {
