@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import chai from 'chai';
 import { BASE_URL } from '../../config';
 import { adminAuth } from '../helper';

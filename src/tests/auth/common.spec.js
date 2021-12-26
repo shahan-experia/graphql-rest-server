@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { BASE_URL } from '../../config';

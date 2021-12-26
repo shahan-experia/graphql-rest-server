@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import fs from 'fs';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
