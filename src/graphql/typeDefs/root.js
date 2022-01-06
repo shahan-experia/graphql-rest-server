@@ -4,6 +4,7 @@ const rootSchema = gql`
 	scalar Date
 
 	directive @auth(shouldAdmin: Boolean = false, shouldUser: Boolean = false) on FIELD_DEFINITION
+	
 	directive @guest(shouldAdmin: Boolean = false, shouldUser: Boolean = false) on FIELD_DEFINITION
 
 	type Query {

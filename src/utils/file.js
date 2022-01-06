@@ -35,7 +35,7 @@ class File extends RootUtils {
 	}
 
 	getFileBuffer(imagePath) {
-		const path = `./uploads/${imagePath}`;
+		const path = `${this.path}/${imagePath}`;
 		if (existsSync(path)) return readFileSync(path);
 
 		return readFileSync(`./src/assets/404-image.png`);
