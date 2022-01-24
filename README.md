@@ -15,18 +15,19 @@ npm run up
 npm run dev
 ```
 
-## postgresql
+## mysql
 
 ```sh
 # docker to open bash
-docker exec -it graphql-rest-server_postgres-db_1 bas
-# docker to open plsql
-docker exec -it graphql-rest-server_postgres-db_1 psql -U prisma -W dev
+docker exec -it khabri-main_mysql_db_1 bash
+
+# docker to open mysql
+docker exec -it khabri-main_mysql_db_1 mysql -u root -p prisma
+
 # flags
 -it # for interactive
--U # for username
--W # database
-# postgresql terminal commands list
+-u # for username
+-p # database
 ```
 
 ## redis commands
