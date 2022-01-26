@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { prisma } from '../../library';
 import { BCRYPT_SALT } from '../../config';
-import { validations } from '../../utils';
+import { logics, validations } from '../../utils';
 
 async function changePassword(root, args, ctx) {
 	await validations.validate(validations.schemas.admin.changePassword, args);
@@ -16,10 +16,12 @@ async function changePassword(root, args, ctx) {
 		throw new Error('409;;Your new password cannot be same as the old one');
 	}
 
-	await prisma.admin.update({
-		where: { id: ctx.req.user.id },
-		data: { password: bcrypt.hashSync(args.password, BCRYPT_SALT) },
-	});
+	const data = {
+		password: bcrypt.hashSync(args.password, BCRYPT_SALT),
+		updatedAt: logics.getZeroTimeZoneDate(),
+	};
+
+	await prisma.admin.update({ where: { id: ctx.req.user.id }, data });
 
 	return 'Password changed successfully';
 }

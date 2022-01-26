@@ -1,6 +1,7 @@
 import cp from 'child_process';
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import logics from './logics';
+import { prisma } from '../library';
 
 export const restWrapper = async function ([req, res], controller) {
 	try {
@@ -13,6 +14,8 @@ export const restWrapper = async function ([req, res], controller) {
 	} catch (error) {
 		const { statusCode, errorMessage } = logics.catchError(error);
 		res.status(statusCode).send(errorMessage);
+	} finally {
+		await prisma.$disconnect();
 	}
 };
 
@@ -30,6 +33,8 @@ export const graphqlWrapper = async function (args, controller) {
 				throw new ApolloError(errorMessage);
 			}
 		}
+	} finally {
+		await prisma.$disconnect();
 	}
 };
 

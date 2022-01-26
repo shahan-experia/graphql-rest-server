@@ -4,18 +4,21 @@ import { BCRYPT_SALT, JWT_SECRET } from '../../config';
 import { prisma, redis } from '../../library';
 import { file, logics, validations } from '../../utils';
 
-async function signup(root, args, ctx) {
-	await validations.validate(validations.schemas.user.signup, args);
+async function signup(root, data, ctx) {
+	await validations.validate(validations.schemas.user.signup, data);
 
-	const { username, avatar } = args;
+	const { username, avatar } = data;
 
 	const userFound = await prisma.user.findFirst({ where: { username, ...logics.includePreWhere } });
 	if (userFound) throw new Error('409;;User already exists with this username');
 
-	args.password = bcrypt.hashSync(args.password, BCRYPT_SALT);
-	args.avatar = await file.moveImageFromTmp(avatar);
+	data.password = bcrypt.hashSync(data.password, BCRYPT_SALT);
+	data.avatar = await file.moveImageFromTmp(avatar);
 
-	const user = await prisma.user.create({ data: args });
+	data.createdAt = logics.getZeroTimeZoneDate();
+	data.updatedAt = logics.getZeroTimeZoneDate();
+
+	const user = await prisma.user.create({ data });
 
 	const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
 

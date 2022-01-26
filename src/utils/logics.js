@@ -1,3 +1,4 @@
+import moment from 'moment';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config';
 import { redis } from '../library';
@@ -22,6 +23,11 @@ class Logics extends RootUtils {
 
 	getToken(tokenKey) {
 		return redis.get(tokenKey);
+	}
+
+	getZeroTimeZoneDate(date = moment().toISOString()) {
+		const dt = moment(date).toISOString();
+		return `${dt.split('.')[0]}.000Z`;
 	}
 }
 

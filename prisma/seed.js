@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
 import { BCRYPT_SALT } from '../src/config';
+import { logics } from '../src/utils';
 
 const prisma = new PrismaClient();
 
@@ -11,6 +12,8 @@ const prisma = new PrismaClient();
 			username,
 			password: bcrypt.hashSync('shahan', BCRYPT_SALT),
 			role: 'SYSTEM',
+			createdAt: logics.getZeroTimeZoneDate(),
+			updatedAt: logics.getZeroTimeZoneDate(),
 		};
 		let user = await prisma.admin.findFirst({ where: { username } });
 		if (!user) user = await prisma.admin.create({ data });
@@ -23,5 +26,6 @@ const prisma = new PrismaClient();
 		process.exit(1);
 	} finally {
 		await prisma.$disconnect();
+		process.exit(0);
 	}
 })();
