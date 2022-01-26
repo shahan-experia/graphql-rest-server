@@ -1,7 +1,7 @@
 import chai from 'chai';
 import { BASE_URL } from '../../config';
 import { userAuth, common } from '../helper';
-import { auth, logics } from '../../utils';
+import { auth, executeCommand } from '../../utils';
 import chaiHttp from 'chai-http';
 import app from '../..';
 import { prisma } from '../../library';
@@ -249,7 +249,7 @@ describe('User Authentication routes APIs', function () {
 	});
 
 	after(async () => {
-		logics.executeCommand('rm uploads/*.*');
+		executeCommand('rm uploads/*.*', true);
 		const userFound = await prisma.user.findFirst({ where: { username: 'test-user' } });
 		if (userFound) await prisma.user.delete({ where: { id: userFound.id } });
 	});

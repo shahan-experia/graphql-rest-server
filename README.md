@@ -5,12 +5,14 @@
 ```sh
 # Clone (or fork) the repo
 git clone https://github.com/shahanahmed86/graphql-rest-server.git && cd graphql-rest-server
-# Fill out .env file with secrets (development only)
-cp .env.example .env
-# Install the deps
-npm install
-# dockerize your system then Run this command
-npm run up
+
+# dockerize the project
+node setup docker
+
+# flags
+-f # for reinstalling the node_modules again like "node setup -f" or "node setup docker -f"
+docker to setup with docker
+
 # run the server
 npm run dev
 ```
@@ -19,10 +21,10 @@ npm run dev
 
 ```sh
 # docker to open bash
-docker exec -it khabri-main_mysql_db_1 bash
+docker exec -it graphql-rest-server_mysql_db_1 bash
 
 # docker to open mysql
-docker exec -it khabri-main_mysql_db_1 mysql -u root -p prisma
+docker exec -it graphql-rest-server_mysql_db_1 mysql -u root -p prisma
 
 # flags
 -it # for interactive

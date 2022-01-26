@@ -1,16 +1,18 @@
-const bcrypt = require('bcryptjs');
-const { PrismaClient } = require('@prisma/client');
+import bcrypt from 'bcryptjs';
+import { PrismaClient } from '@prisma/client';
+import { BCRYPT_SALT } from '../src/config';
 
 const prisma = new PrismaClient();
 
 (async () => {
 	try {
+		const username = 'shahan';
 		const data = {
-			username: 'shahan',
-			password: bcrypt.hashSync('shahan', 10),
+			username,
+			password: bcrypt.hashSync('shahan', BCRYPT_SALT),
 			role: 'SYSTEM',
 		};
-		let user = await prisma.admin.findFirst({ where: { username: 'shahan' } });
+		let user = await prisma.admin.findFirst({ where: { username } });
 		if (!user) user = await prisma.admin.create({ data });
 
 		delete user.password;

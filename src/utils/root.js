@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import childProcess from 'child_process';
 
 function messages(type) {
 	return {
@@ -79,18 +78,6 @@ class RootUtils {
 		else [statusCode, errorMessage] = error.message.split(';;');
 
 		return { statusCode, errorMessage };
-	}
-
-	executeCommand(cmd, exit = true) {
-		if (
-			childProcess.spawnSync(cmd, {
-				cwd: process.cwd(),
-				stdio: 'inherit',
-				shell: true,
-			}).status
-		)
-			exit && process.exit(1);
-		else return true;
 	}
 }
 

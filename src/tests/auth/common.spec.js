@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import { BASE_URL } from '../../config';
 import { common } from '../helper';
 import app from '../..';
-import { logics } from '../../utils';
+import { executeCommand } from '../../utils';
 
 chai.use(chaiHttp);
 
@@ -67,6 +67,6 @@ describe('Common routes APIs', function () {
 	});
 
 	after(() => {
-		logics.executeCommand('rm -rf uploads/temp/*.*');
+		executeCommand('rm -rf uploads/temp/*.*', true);
 	});
 });

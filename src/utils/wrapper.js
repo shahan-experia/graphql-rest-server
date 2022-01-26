@@ -1,3 +1,4 @@
+import cp from 'child_process';
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import logics from './logics';
 
@@ -44,3 +45,10 @@ export const catchAsync =
 			res.status(statusCode).send(errorMessage);
 		}
 	};
+
+export function executeCommand(cmd, exit = false) {
+	const result = cp.spawnSync(cmd, { cwd: process.cwd(), stdio: 'inherit', shell: true });
+
+	if (result.status || exit) process.exit(result.status);
+	else return true;
+}
