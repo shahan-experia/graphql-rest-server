@@ -1,6 +1,6 @@
 import { logics } from '../../utils';
 
-function me(root, args, ctx) {
+async function me(root, args, ctx) {
 	return logics.excludePropsFromUser(ctx.req.user);
 }
 

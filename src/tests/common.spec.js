@@ -1,9 +1,9 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { BASE_URL } from '../../config';
-import { common } from '../helper';
-import app from '../..';
-import { executeCommand } from '../../utils';
+import { BASE_URL } from '../config';
+import { common } from './helper';
+import app from '..';
+import { executeCommand } from '../utils';
 
 chai.use(chaiHttp);
 

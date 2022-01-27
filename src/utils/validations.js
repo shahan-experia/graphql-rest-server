@@ -12,7 +12,7 @@ class Validations extends RootUtils {
 					password: this.allSchemas.password,
 				}),
 				changePassword: Joi.object().keys({
-					oldPassword: this.allSchemas.password,
+					oldPassword: this.allSchemas.oldPassword,
 					password: this.allSchemas.password,
 				}),
 			},
@@ -22,7 +22,7 @@ class Validations extends RootUtils {
 					password: this.allSchemas.password,
 				}),
 				changePassword: Joi.object().keys({
-					oldPassword: this.allSchemas.password,
+					oldPassword: this.allSchemas.oldPassword,
 					password: this.allSchemas.password,
 				}),
 				signup: Joi.object().keys({

@@ -4,7 +4,6 @@ import { userAuth, common } from '../helper';
 import { auth, executeCommand } from '../../utils';
 import chaiHttp from 'chai-http';
 import app from '../..';
-import { prisma } from '../../library';
 
 chai.use(chaiHttp);
 
@@ -73,30 +72,6 @@ describe('User Authentication routes APIs', function () {
 		}
 	});
 
-	it(`${BASE_URL}/api/app/auth/login => POST => should fail`, async () => {
-		try {
-			const { error, text } = await userAuth.login('shahan', 'wrong-password');
-
-			expect(error).to.be.an.instanceOf(Error);
-			expect(text).to.be.a.string('Not Authenticated');
-		} catch (error) {
-			console.error(error);
-			expect(true).to.be.false;
-		}
-	});
-
-	it(`${BASE_URL}/api/app/auth/login => POST => should fail`, async () => {
-		try {
-			const { error, text } = await userAuth.login('wrong-username', '123abc456');
-
-			expect(error).to.be.an.instanceOf(Error);
-			expect(text).to.be.a.string('Not Authenticated');
-		} catch (error) {
-			console.error(error);
-			expect(true).to.be.false;
-		}
-	});
-
 	it(`${BASE_URL}/api/app/auth/login => POST => should success`, async () => {
 		try {
 			const { body, error } = await userAuth.login();
@@ -106,22 +81,6 @@ describe('User Authentication routes APIs', function () {
 			expect(body.user).to.be.an('object');
 			expect(body.user).not.have.property('password');
 			['id', 'username', 'signUpType'].map((prop) => expect(body.user).to.have.property(prop));
-		} catch (error) {
-			console.error(error);
-			expect(true).to.be.false;
-		} finally {
-			await auth.signOut('userToken');
-		}
-	});
-
-	it(`${BASE_URL}/api/app/auth/login => POST => should fail`, async () => {
-		try {
-			await userAuth.login();
-
-			const { error, text } = await userAuth.login();
-
-			expect(error).to.be.an.instanceOf(Error);
-			expect(text).to.be.a.string('You need to sign out.');
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
@@ -140,62 +99,6 @@ describe('User Authentication routes APIs', function () {
 			expect(body).to.be.an('object');
 			expect(body).not.have.property('password');
 			['id', 'username', 'signUpType'].map((prop) => expect(body).to.have.property(prop));
-		} catch (error) {
-			console.error(error);
-			expect(true).to.be.false;
-		} finally {
-			await auth.signOut('userToken');
-		}
-	});
-
-	it(`${BASE_URL}/api/app/auth/me => GET => should fail`, async () => {
-		try {
-			const { error, text } = await userAuth.me();
-
-			expect(error).to.be.an.instanceOf(Error);
-			expect(text).to.be.a.string('You need to sign in.');
-		} catch (error) {
-			console.error(error);
-			expect(true).to.be.false;
-		}
-	});
-
-	it(`${BASE_URL}/api/app/auth/change-password => PUT => should fail`, async () => {
-		try {
-			const { body: loginBody } = await userAuth.login();
-
-			const { error, text } = await chai
-				.request(app)
-				.put('/api/app/auth/change-password')
-				.set('content-type', 'application/json')
-				.set('Authorization', `Bearer ${loginBody.token}`)
-				.field('oldPassword', 'wrong-password')
-				.field('password', 'shahan');
-
-			expect(error).to.be.an.instanceOf(Error);
-			expect(text).to.be.a.string('Old password mismatched');
-		} catch (error) {
-			console.error(error);
-			expect(true).to.be.false;
-		} finally {
-			await auth.signOut('userToken');
-		}
-	});
-
-	it(`${BASE_URL}/api/app/auth/change-password => PUT => should fail`, async () => {
-		try {
-			const { body: loginBody } = await userAuth.login();
-
-			const { error, text } = await chai
-				.request(app)
-				.put('/api/app/auth/change-password')
-				.set('content-type', 'application/json')
-				.set('Authorization', `Bearer ${loginBody.token}`)
-				.field('oldPassword', '123abc456')
-				.field('password', '123abc456');
-
-			expect(error).to.be.an.instanceOf(Error);
-			expect(text).to.be.a.string('Your new password cannot be same as the old one');
 		} catch (error) {
 			console.error(error);
 			expect(true).to.be.false;
@@ -250,7 +153,5 @@ describe('User Authentication routes APIs', function () {
 
 	after(async () => {
 		executeCommand('rm uploads/*.*', true);
-		const userFound = await prisma.user.findFirst({ where: { username: 'test-user' } });
-		if (userFound) await prisma.user.delete({ where: { id: userFound.id } });
 	});
 });

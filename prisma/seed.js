@@ -17,6 +17,7 @@ const prisma = new PrismaClient();
 		};
 		let user = await prisma.admin.findFirst({ where: { username } });
 		if (!user) user = await prisma.admin.create({ data });
+		else user = await prisma.admin.update({ where: { id: user.id }, data });
 
 		delete user.password;
 		console.log('prisma seeds.......... : ', user);

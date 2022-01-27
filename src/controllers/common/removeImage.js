@@ -2,7 +2,7 @@ import { file } from '../../utils';
 
 function removeImage(req, res) {
 	if (file.deleteOldFileLocally(req.query.filename)) {
-		return res.status(200).send('Image deleted successfully');
+		return 'Image deleted successfully';
 	}
 	throw new Error("404;;Image has already been deleted or doesn't exists");
 }

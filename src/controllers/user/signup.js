@@ -9,7 +9,7 @@ async function signup(root, data, ctx) {
 
 	const { username, avatar } = data;
 
-	const userFound = await prisma.user.findFirst({ where: { username, ...logics.includePreWhere } });
+	const userFound = await prisma.user.findFirst({ where: logics.includePreWhere({ username }) });
 	if (userFound) throw new Error('409;;User already exists with this username');
 
 	data.password = bcrypt.hashSync(data.password, BCRYPT_SALT);

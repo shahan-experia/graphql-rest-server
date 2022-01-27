@@ -41,7 +41,7 @@ class Auth extends RootUtils {
 			updatedAt: logics.getZeroTimeZoneDate(),
 		};
 
-		let user = await prisma.user.findFirst({ where: { firebaseUID, ...logics.includePreWhere } });
+		let user = await prisma.user.findFirst({ where: logics.includePreWhere({ firebaseUID }) });
 		if (!user) user = await prisma.user.create({ data });
 
 		return logics.excludePropsFromUser(user);

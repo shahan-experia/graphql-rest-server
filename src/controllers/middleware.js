@@ -11,13 +11,13 @@ export async function ensureSignIn({ shouldAdmin, shouldUser }, receivedToken) {
 	let data;
 	if (adminId) {
 		const admin = await prisma.admin.findFirst({
-			where: { id: adminId, ...logics.includePreWhere },
+			where: logics.includePreWhere({ id: adminId }),
 		});
 		if (!admin) throw new Error('401;;Not Authenticated');
 
 		data = { ...admin, type: 'admin' };
 	} else if (userId) {
-		const user = await prisma.user.findFirst({ where: { id: userId, ...logics.includePreWhere } });
+		const user = await prisma.user.findFirst({ where: logics.includePreWhere({ id: userId }) });
 		if (!user) throw new Error('401;;Not Authenticated');
 
 		data = { ...user, type: 'user' };

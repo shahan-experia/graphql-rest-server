@@ -22,7 +22,8 @@
 		"db:reset": "prisma migrate reset",
 		"lint": "eslint '**/*.js'",
 		"prettify": "prettier --no-editorconfig -l --write '**/*.{js,json}'",
-		"test": "node -r esm test-script.js"
+		"test": "node -r esm test-script.js",
+		"test:user": "mocha -r esm src/tests/user/*.spec.js --exit"
 	},
 	"lint-staged": {
 		"**/*.{js,json}": [

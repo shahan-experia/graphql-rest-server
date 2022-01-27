@@ -13,7 +13,10 @@ function messages(type) {
 class RootUtils {
 	constructor() {
 		this.allSchemas = {
-			firebaseToken: Joi.string().disallow(null).required().messages(messages('Firebase Token')),
+			firebaseToken: Joi.string()
+				.disallow(null, '')
+				.required()
+				.messages(messages('Firebase Token')),
 
 			username: Joi.string()
 				.min(3)
@@ -21,15 +24,27 @@ class RootUtils {
 				.disallow(null)
 				.required()
 				.messages(messages('Username')),
+
 			password: Joi.string()
 				.min(6)
 				.max(50)
 				.disallow(null)
 				.required()
 				.messages(messages('Password')),
+
+			oldPassword: Joi.string()
+				.min(6)
+				.max(50)
+				.disallow(null)
+				.required()
+				.messages(messages('Old Password')),
+
 			avatar: Joi.string().allow(null).disallow('').optional().messages(messages('Avatar')),
+
 			fullName: Joi.string().allow(null).disallow('').optional().messages(messages('Full Name')),
+
 			email: Joi.string().email().allow(null).disallow('').optional().messages(messages('Email')),
+
 			cell: Joi.string()
 				.min(10)
 				.max(14)
@@ -41,6 +56,7 @@ class RootUtils {
 					...messages('Cell #'),
 					'string.pattern.base': 'Cell number is not properly formatted',
 				}),
+
 			gender: Joi.string()
 				.uppercase()
 				.allow(null)
@@ -58,8 +74,9 @@ class RootUtils {
 		return Date.now();
 	}
 
-	get includePreWhere() {
-		return { isDeleted: { not: true } };
+	includePreWhere(where = {}) {
+		where.isDeleted = { not: true };
+		return where;
 	}
 
 	excludePropsFromAdmin({ password, isDeleted, ...admin }) {

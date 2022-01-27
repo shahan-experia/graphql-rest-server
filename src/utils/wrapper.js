@@ -44,15 +44,16 @@ export const catchAsync =
 		const [, res] = args;
 		try {
 			const result = await handler(...args);
-			return result;
+			if (result instanceof Buffer) res.status(200).send(result);
+			else res.status(200).json(result);
 		} catch (error) {
 			const { statusCode, errorMessage } = logics.catchError(error);
 			res.status(statusCode).send(errorMessage);
 		}
 	};
 
-export function executeCommand(cmd, exit = false) {
-	const result = cp.spawnSync(cmd, { cwd: process.cwd(), stdio: 'inherit', shell: true });
+export function executeCommand(cmd, exit = false, stdio = 'inherit') {
+	const result = cp.spawnSync(cmd, { cwd: process.cwd(), stdio, shell: true });
 
 	if (result.status || exit) process.exit(result.status);
 	else return true;
