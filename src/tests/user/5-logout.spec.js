@@ -1,7 +1,6 @@
 import chai from 'chai';
-import { auth, executeCommand, logics } from '../../utils';
+import { auth, logics } from '../../utils';
 import { userController, middleware } from '../../controllers';
-import { prisma } from '../../library';
 
 const { expect } = chai;
 
@@ -42,16 +41,5 @@ describe('User logout controller', function () {
 			console.error(error);
 			expect(true).to.be.false;
 		}
-	});
-
-	after(async () => {
-		const userId = (
-			await prisma.user.findFirst({
-				where: logics.includePreWhere({ username: 'shahanahmed86' }),
-			})
-		).id;
-		await prisma.user.delete({ where: { id: userId } });
-
-		executeCommand('rm -rf uploads/temp/*.*', false, 'ignore');
 	});
 });
